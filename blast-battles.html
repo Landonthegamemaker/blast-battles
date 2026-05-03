@@ -792,14 +792,14 @@
     <div id="char-select-body" style="display:grid;grid-template-columns:1fr 1px 1fr;gap:0 14px;">
       <!-- Heroes -->
       <div>
-        <div id="hero-header" style="font-family:'Share Tech Mono','Courier New',monospace;font-size:0.58rem;color:var(--hero);text-transform:uppercase;letter-spacing:3px;text-align:center;margin-bottom:6px;border-bottom:1px solid rgba(74,184,255,0.3);padding-bottom:4px;">⚔ HEROES</div>
+        <div id="hero-header" style="font-family:'Share Tech Mono','Courier New',monospace;font-size:0.58rem;color:var(--hero);text-transform:uppercase;letter-spacing:3px;text-align:center;margin-bottom:6px;border-bottom:1px solid rgba(74,184,255,0.3);padding-bottom:4px;">🦸 HEROES</div>
         <div id="hero-grid" style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:6px;"></div>
       </div>
       <!-- Divider -->
       <div id="char-divider" style="background:var(--border);"></div>
       <!-- Villains -->
       <div>
-        <div id="villain-header" style="font-family:'Share Tech Mono','Courier New',monospace;font-size:0.6rem;color:var(--villain);text-transform:uppercase;letter-spacing:3px;text-align:center;margin-bottom:6px;border-bottom:1px solid rgba(196,75,255,0.3);padding-bottom:4px;">💀 VILLAINS</div>
+        <div id="villain-header" style="font-family:'Share Tech Mono','Courier New',monospace;font-size:0.6rem;color:var(--villain);text-transform:uppercase;letter-spacing:3px;text-align:center;margin-bottom:6px;border-bottom:1px solid rgba(196,75,255,0.3);padding-bottom:4px;">🦹‍♂️ VILLAINS</div>
         <div id="villain-grid" style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:6px;"></div>
       </div>
     </div>
@@ -822,7 +822,7 @@
         🔴 HARD — Bot never skips, plays optimally
       </button>
       <button class="btn" onclick="startWithDifficulty('impossible')" style="width:100%;padding:12px;font-size:1rem;background:rgba(255,68,68,0.1);border-color:var(--charged);color:var(--charged);">
-        💀 IMPOSSIBLE — Trained RL model
+        🤖 IMPOSSIBLE — Trained RL model
       </button>
     </div>
   </div>
@@ -963,23 +963,23 @@ const CHARACTER_POOL = [
 // --- LOCATION CARDS (25 for 5x5 grid) ---
 const LOCATION_POOL = [
   {id:'l1', name:'Neutral Zone', effect:'neutral', effectDesc:'No special effect', icon:'⬜', css:'neutral'},
-  {id:'l2', name:'Hero Sanctum', effect:'hero_zone', effectDesc:'+20% dmg for heroes', icon:'🌟', css:'hero-zone'},
-  {id:'l3', name:'Villain Den', effect:'villain_zone', effectDesc:'+20% dmg for villains', icon:'💀', css:'villain-zone'},
+  {id:'l2', name:'Hero Sanctum', effect:'hero_zone', effectDesc:'+25% dmg for heroes', icon:'🌟', css:'hero-zone'},
+  {id:'l3', name:'Villain Den', effect:'villain_zone', effectDesc:'+25% dmg for villains', icon:'💀', css:'villain-zone'},
   {id:'l4', name:'The Armory', effect:'draw_weapon', effectDesc:'Draw weapon card', icon:'🔧', css:'buff'},
   {id:'l5', name:'The Forge', effect:'draw_defense', effectDesc:'Draw defense card', icon:'⚒️', css:'buff'},
-  {id:'l6', name:'Radiation Zone', effect:'radiation', effectDesc:'-8 HP per phase here', icon:'☢️', css:'danger'},
-  {id:'l7', name:'Stink Swamp', effect:'poison', effectDesc:'-5 HP per phase here', icon:'🌿', css:'danger'},
+  {id:'l6', name:'Radiation Zone', effect:'radiation', effectDesc:'-5 HP per phase here', icon:'☢️', css:'danger'},
+  {id:'l7', name:'Stink Swamp', effect:'radiation', effectDesc:'-5 HP per phase here', icon:'🌿', css:'danger'},
   {id:'l8', name:'Scrap Heap', effect:'discard', effectDesc:'Optionally discard 1 card', icon:'🗑️', css:'neutral'},
   {id:'l9', name:'The Hospital', effect:'heal', effectDesc:'+3 HP per phase here', icon:'❤️‍🩹', css:'buff'},
   {id:'l10', name:'Bunker', effect:'neutral', effectDesc:'No special effect', icon:'🏗️', css:'neutral'},
   {id:'l11', name:'Crossroads', effect:'neutral', effectDesc:'No special effect', icon:'🔀', css:'neutral'},
-  {id:'l12', name:'Fire Zone', effect:'radiation', effectDesc:'-8 HP per phase here', icon:'🔥', css:'danger'},
+  {id:'l12', name:'Fire Zone', effect:'radiation', effectDesc:'-5 HP per phase here', icon:'🔥', css:'danger'},
   {id:'l13', name:'Supply Depot', effect:'draw_weapon', effectDesc:'Draw weapon card', icon:'📦', css:'buff'},
   {id:'l14', name:'Medic Post', effect:'draw_defense', effectDesc:'Draw defense card', icon:'🏥', css:'buff'},
-  {id:'l15', name:'Hero Zone', effect:'hero_zone', effectDesc:'+20% dmg for heroes', icon:'⭐', css:'hero-zone'},
-  {id:'l16', name:'Dark Alley', effect:'villain_zone', effectDesc:'+20% dmg for villains', icon:'🌑', css:'villain-zone'},
+  {id:'l15', name:'Hero Zone', effect:'hero_zone', effectDesc:'+25% dmg for heroes', icon:'⭐', css:'hero-zone'},
+  {id:'l16', name:'Dark Alley', effect:'villain_zone', effectDesc:'+25% dmg for villains', icon:'🌑', css:'villain-zone'},
   {id:'l17', name:'Ruined City', effect:'neutral', effectDesc:'No special effect', icon:'🏚️', css:'neutral'},
-  {id:'l18', name:'Toxic Waste', effect:'poison', effectDesc:'-5 HP per phase here', icon:'☠️', css:'danger'},
+  {id:'l18', name:'Toxic Waste', effect:'radiation', effectDesc:'-5 HP per phase here', icon:'☠️', css:'danger'},
   {id:'l19', name:'Power Station', effect:'heal', effectDesc:'+3 HP per phase here', icon:'⚡', css:'buff'},
   {id:'l20', name:'Open Field', effect:'neutral', effectDesc:'No special effect', icon:'🌾', css:'neutral'},
   {id:'l21', name:'Sniper Nest', effect:'neutral', effectDesc:'No special effect', icon:'🎯', css:'neutral'},
@@ -1433,8 +1433,8 @@ function buildObsVector() {
   for(let n=0;n<25;n++) v.push(G.botPos===n?1:0);
 
   // Location effects — 25 nodes = 25
-  const EFF = {none:0,radiation:1,poison:2,armory:3,forge:4,scrap:5,heal:6};
-  for(let n=0;n<25;n++) v.push((EFF[G.locations[n]?.effect]??0)/6);
+  const EFF = {none:0,radiation:1,armory:2,forge:3,scrap:4,heal:5};
+  for(let n=0;n<25;n++) v.push((EFF[G.locations[n]?.effect]??0)/5);
 
   // Phase one-hot = 5
   for(let i=0;i<5;i++) v.push(G.phase===i?1:0);

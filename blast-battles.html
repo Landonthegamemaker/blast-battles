@@ -1644,7 +1644,7 @@ function botMoveSmart() {
 
   // Determine if current tile is a hazard (damage per phase)
   const currentLoc = G.locations[G.botPos];
-  const onHazard = currentLoc.effect === 'radiation' || currentLoc.effect === 'poison';
+  const onHazard = currentLoc.effect === 'radiation';
 
   // Playable weapons this phase
   const playableThisPhase = allBotWeapons.filter(w => w.speed === phase && w.ammo > 0);
@@ -1663,7 +1663,7 @@ function botMoveSmart() {
 
   function isHazardTile(idx) {
     const e = G.locations[idx].effect;
-    return e === 'radiation' || e === 'poison';
+    return e === 'radiation';
   }
 
   function scoreNode(node) {
@@ -1975,7 +1975,7 @@ function applyLocationEffects(isFastPhase = true) {
   const pLoc = G.locations[G.playerPos];
 
   // Damage/heal — every phase
-  if(pLoc.effect === 'radiation' || pLoc.effect === 'poison') {
+  if(pLoc.effect === 'radiation') {
     const dmg = pLoc.effect === 'radiation' ? 8 : 5;
     G.playerChar.hp = Math.max(0, G.playerChar.hp - dmg);
     logMsg('damage',`${pLoc.name} deals ${dmg} damage to you.`);

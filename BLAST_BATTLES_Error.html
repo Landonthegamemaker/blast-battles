@@ -2009,6 +2009,7 @@ function applyLocationEffects(isFastPhase = true) {
   if(pLoc.effect === 'radiation') {
     const dmg = pLoc.effect === 'radiation' ? 8 : 5;
     G.playerChar.hp = Math.max(0, G.playerChar.hp - dmg);
+    G.lastKillingBlow = card.name;
     logMsg('damage',`${pLoc.name} deals ${dmg} damage to you.`);
   }
   if(pLoc.effect === 'heal') {
@@ -2132,15 +2133,15 @@ function endGame(winner, timeLimit = false) {
 
   let title, msg;
   if(draw) {
-    title = '\U0001f91d DRAW!';
+    title = '\u{1F91D} DRAW!';
     msg = `Both fighters survived 20 turns with equal HP!`;
   } else if(timeLimit) {
-    title = won ? '\U0001f3c6 VICTORY! \u23f3' : '\U0001f480 DEFEATED \u23f3';
+    title = won ? '\u{1F3C6} VICTORY! \u23f3' : '\u{1F480} DEFEATED \u23f3';
     msg = won
       ? `${G.botChar.name} sustained grave injuries, and perished shortly after your encounter. You live to fight another day.`
       : `${G.playerChar.name} sustained grave injuries, and perished shortly after the encounter. ${G.botChar.name} stands victorious.`;
   } else {
-    title = won ? '\U0001f3c6 VICTORY!' : '\U0001f480 DEFEATED';
+    title = won ? '\u{1F3C6} VICTORY!' : '\u{1F480} DEFEATED';
     msg = won
       ? `You defeated ${G.botChar.name}!`
       : killingWeapon
@@ -2154,8 +2155,8 @@ function endGame(winner, timeLimit = false) {
   const bDead = G.botChar.hp <= 0;
   const pImg  = G.playerChar.img  ? `<img class="modal-char-img" src="${G.playerChar.img}">` : `<div class="modal-char-img-placeholder" style="background:rgba(74,184,255,0.1);">${G.playerChar.icon}</div>`;
   const bImg  = G.botChar.img     ? `<img class="modal-char-img" src="${G.botChar.img}">` : `<div class="modal-char-img-placeholder" style="background:rgba(196,75,255,0.1);">${G.botChar.icon}</div>`;
-  const pDeadOverlay = pDead ? `<div class="modal-dead-overlay">\U0001f480</div>` : '';
-  const bDeadOverlay = bDead ? `<div class="modal-dead-overlay">\U0001f480</div>` : '';
+  const pDeadOverlay = pDead ? `<div class="modal-dead-overlay">\u{1F480}</div>` : '';
+  const bDeadOverlay = bDead ? `<div class="modal-dead-overlay">\u{1F480}</div>` : '';
 
   // Battle Score formula
   const pHpRatio  = G.playerChar.hp / G.playerChar.maxHp;
@@ -2202,7 +2203,7 @@ function retreat() {
   if(G.gameOver) return;
   if(confirm('Are you sure you would like to retreat? The match will end immediately.')) {
     clearPhaseTimer();
-    logMsg('system', '\U0001f3f3\ufe0f You retreated from battle.');
+    logMsg('system', '\u{1F3F3}\uFE0F You retreated from battle.');
     G.gameOver = true;
     const elapsed = Math.round((Date.now() - G.matchStartTime) / 1000);
     const mins = Math.floor(elapsed / 60);
@@ -2216,7 +2217,7 @@ function retreat() {
                      / timeSec;
     const battleScore = Math.round(rawScore * 100) / 100;
     const scoreColor = battleScore >= 0 ? '#44ff88' : '#ff4444';
-    document.getElementById('modal-title').textContent = '\U0001f3f3\ufe0f ESCAPED';
+    document.getElementById('modal-title').textContent = '\u{1F3F3}\uFE0F ESCAPED';
     document.getElementById('modal-msg').textContent = 'You live to fight another battle.';
     const rPImg = G.playerChar.img ? `<img class="modal-char-img" src="${G.playerChar.img}">` : `<div class="modal-char-img-placeholder" style="background:rgba(74,184,255,0.1);">${G.playerChar.icon}</div>`;
     const rBImg = G.botChar.img    ? `<img class="modal-char-img" src="${G.botChar.img}">` : `<div class="modal-char-img-placeholder" style="background:rgba(196,75,255,0.1);">${G.botChar.icon}</div>`;

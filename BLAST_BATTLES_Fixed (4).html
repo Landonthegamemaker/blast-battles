@@ -2030,7 +2030,10 @@ function applyLocationEffects(isFastPhase = true) {
 
   // Damage/heal — every phase
   if(pLoc.effect === 'radiation') {
-    const dmg = pLoc.effect === 'radiation' ? 8 : 5;
+    const dmg = pLoc.effect === 'radiation' ? 5;
+     if(charId === c5) {
+      dmg = 3;
+    }
     G.playerChar.hp = Math.max(0, G.playerChar.hp - dmg);
     logMsg('damage',`${pLoc.name} deals ${dmg} damage to you.`);
   }
@@ -2075,8 +2078,11 @@ function applyLocationEffects(isFastPhase = true) {
   const bLoc = G.locations[G.botPos];
 
   // Damage/heal — every phase
-  if(bLoc.effect === 'radiation' || bLoc.effect === 'poison') {
-    const dmg = bLoc.effect === 'radiation' ? 8 : 5;
+  if(bLoc.effect === 'radiation') {
+    const dmg = bLoc.effect === 'radiation' ? 5;
+    if(botChar === c5) {
+      dmg = 3;
+    }
     G.botChar.hp = Math.max(0, G.botChar.hp - dmg);
     logMsg('damage',`${bLoc.name} deals ${dmg} damage to bot.`);
   }

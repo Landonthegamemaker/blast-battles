@@ -2053,7 +2053,7 @@ function applyLocationEffects(isFastPhase = true) {
   const bLoc = G.locations[G.botPos];
 
   // Damage/heal — every phase
-  if(bLoc.effect === 'radiation' || bLoc.effect === 'poison') {
+  if(bLoc.effect === 'radiation') {
     const dmg = bLoc.effect === 'radiation' ? 8 : 5;
     G.botChar.hp = Math.max(0, G.botChar.hp - dmg);
     logMsg('damage',`${bLoc.name} deals ${dmg} damage to bot.`);

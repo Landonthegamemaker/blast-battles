@@ -2693,32 +2693,34 @@ function endGame(winner, timeLimit = false) {
 
   // Killing blow — extract from bot's last damage log if available
   let killingWeapon = G.lastKillingBlow || null;
+  
+  const pDmgWon  = G.playerDmgDealt >= G.botDmgDealt;
+  const pHealWon = G.playerHealTotal >= G.botHealTotal;
+  const edge = pDmgWon && pHealWon ? 'DMG & Healing'
+             : pDmgWon             ? 'DMG'
+             : pHealWon            ? 'Healing'
+             : 'neither stat';
 
   let title, msg;
   if(draw) {
     title = '🤝 DRAW!';
     msg = `Both fighters survived 20 turns with equal stats!`;
   } else if(timeLimit) {
+    
     title = won ? '🏆 VICTORY! \u23f3' : '💀 DEFEATED \u23f3';
-
-    const pDmgWon  = G.playerDmgDealt >= G.botDmgDealt;
-    const pHealWon = G.playerHealTotal >= G.botHealTotal;
-    const edge = pDmgWon && pHealWon ? 'DMG & Healing'
-               : pDmgWon             ? 'DMG'
-               : pHealWon            ? 'Healing'
-               : 'neither stat';
     msg = won
       ? `Time's up — you outscored ${G.botChar.name} in ${edge}!`
       : `Time's up — ${G.botChar.name} outscored you in ${edge}.`;
   } else {
-    title = won ? '🏆 VICTORY!' : '💀 DEFEATED';
     
+    title = won ? '🏆 VICTORY!' : '💀 DEFEATED';
     msg = won
       ? `You defeated ${G.botChar.name}! Leading in ${edge}!`
       : killingWeapon
         ? `${G.botChar.name} eliminated you with ${killingWeapon}.`
         : `${G.botChar.name} has eliminated you.`;
   }
+  
   document.getElementById('modal-title').textContent = title;
   document.getElementById('modal-msg').textContent = msg;
 

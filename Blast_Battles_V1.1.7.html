@@ -1223,7 +1223,10 @@ function startPhase() {
     G.awaitingMove = false;
     G.playerActedThisPhase = true;
     logMsg('system', `💣 ${G.playerChar.name} is too slow to act during the Fast phase. Holding position...`);
-    setTimeout(() => endPlayerTurn(), 800); // small delay so the log message is readable
+    setTimeout(() => endPlayerTurn(), 3000); // small delay so the log message is readable
+    if(G.botActedThisPhase === true){
+      advancePhase();
+    }
   } else {
     G.awaitingMove = true;
   }
@@ -1583,9 +1586,6 @@ function impossibleBotPlayPhase() {
   if(G.botChar.attribute === 'explosive_specialist' && _phase === 'fast') {
     logMsg('bot', `💣 ${G.botChar.name} is too slow to act during the Fast phase.`);
     G.botActedThisPhase = true;
-    if(G.playerChar.attribute === 'explosive_specialist') {
-      advancePhase();
-    }
     return;
   }
   if(!ortSession || !ortSession.ready) { botPlayPhase(); return; }

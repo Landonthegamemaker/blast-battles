@@ -2960,7 +2960,7 @@ function renderPlayerCards() {
         const afterLocation  = applyLocationDamageBuff(baseAfterRange, G.playerChar, G.playerPos, card);
         const totalPct = Math.round(afterLocation / card.damage * 100);
         const locBonus = afterLocation > baseAfterRange;
-        displayPct = ` (${totalPct}% dmg${locBonus ? ' ⭐' : ''})`;
+        displayPct = ` (${totalPct}% · ~${afterLocation} dmg${locBonus ? ' ⭐' : ''})`;
       }
       btn.textContent = `🔥 FIRE${displayPct}`;
       btn.style.background = 'var(--accent)';

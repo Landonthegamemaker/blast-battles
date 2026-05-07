@@ -1223,8 +1223,8 @@ function startPhase() {
     G.awaitingMove = false;
     logMsg('system', `💣 ${G.playerChar.name} is too slow to act during the Fast phase. Holding position...`);
     G.playerActedThisPhase = true
-    // setTimeout(() => skipPhase(), 3000);
-    return;
+    setTimeout(() => checkPhaseComplete(), 5000);
+    
   } else {
     G.awaitingMove = true;
   }

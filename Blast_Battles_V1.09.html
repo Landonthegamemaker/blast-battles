@@ -1189,18 +1189,18 @@ function startPhase() {
 
   // ── Player movement gating ────────────────────────────────────────────────
   // heavy_armor (Iron Titan):    Charged phase only
-  // shotgun_specialist (Sam):    Slow & Charged phases only
-  // sniper_specialist (Huntress):Fast & Medium phases only
-  // explosive_specialist (Brutus):cannot move or act during Fast phase
+  // shotgun_specialist (Sentinel Sam):    Slow & Charged phases only
+  // sniper_specialist (Huntress Hellen):Fast & Medium phases only
+  // explosive_specialist (Hank the Tank): Cannot move or act during Fast phase
   const isTitanPlayer    = G.playerChar.attribute === 'heavy_armor';
   const isSamPlayer      = G.playerChar.attribute === 'shotgun_specialist';
   const isHuntressPlayer = G.playerChar.attribute === 'sniper_specialist';
-  const isBrutusPlayer   = G.playerChar.attribute === 'explosive_specialist';
+  const isTankPlayer   = G.playerChar.attribute === 'explosive_specialist';
 
   const heavyMoveOk    = !isTitanPlayer    || phase === 'charged';
   const samMoveOk      = !isSamPlayer      || phase === 'slow' || phase === 'charged';
   const huntressMoveOk = !isHuntressPlayer || phase === 'fast' || phase === 'medium';
-  const brutusMoveOk   = !isBrutusPlayer   || phase !== 'fast';
+  const tankMoveOk   = !isTankPlayer   || phase !== 'fast';
 
   if(!heavyMoveOk) {
     G.awaitingMove = false;
@@ -1211,7 +1211,7 @@ function startPhase() {
   } else if(!huntressMoveOk) {
     G.awaitingMove = false;
     logMsg('system', `🎯 ${G.playerChar.name} holds position — can only move on Fast & Medium phases.`);
-  } else if(!brutusMoveOk) {
+  } else if(!tankMoveOk) {
     G.awaitingMove = false;
     // Brutus is fully locked during Fast — movement AND action blocked
     G.playerActedThisPhase = true;
@@ -1330,6 +1330,9 @@ function playerPlayCard(card) {
     }
     if(G.playerChar.attribute === 'pistol_specialist' && card.subtype !== 'pistol') {
       logMsg('system',`Pistol Pete can only fire pistols — ${card.name} is locked.`); return;
+    }
+    if(G.playerChar.attribute === 'revolver_specialist' && card.subtype !== 'revolver') {
+      logMsg('system',`Cowboy Carl can only fire revolvers — ${card.name} is locked.`); return;
     }
     if(G.playerChar.attribute === 'swift_melee' && card.subtype !== 'melee') {
       logMsg('system',`Viper can only use melee weapons — ${card.name} is locked.`); return;
@@ -1498,11 +1501,11 @@ async function loadOnnxModel() {
 function buildObsVector() {
   // Mirror Python _obs() — OBS_DIM=101
   const SPEED_IDX = {fast:0, medium:1, slow:2, charged:3};
-  const ATTR_IDX  = {pistol_specialist:0, shotgun_specialist:1, rifle_specialist:2,
-                     sniper_specialist:3, melee_specialist:4, explosive_specialist:5,
-                     explosive_resist:6, sniper_resist:7, heavy_armor:8,
-                     extra_carry:9, swift:10, healing:11, swift_melee:4,
-                     tactical_xray:9, radioactive_resist:6};
+  const ATTR_IDX  = {pistol_specialist:0, revolver_specialist:1, shotgun_specialist:2, rifle_specialist:3,
+                     sniper_specialist:4, melee_specialist:5, swift_melee:6, explosive_specialist:7,
+                     explosive_resist:8, sniper_resist:9, radioactive_resist:10, healing:11, heavy_armor:12,
+                     extra_carry:13, swift:14,
+                     tactical_xray:15};
   const phase = PHASES[G.phase];
   const dist  = getDistance(G.playerPos, G.botPos);
   const v = [];
@@ -1589,12 +1592,13 @@ function impossibleBotPlayPhase() {
     G.botHand.forEach((c, i) => {
       if(i >= 4) return;
       const isPistolLocked = G.botChar.attribute === 'pistol_specialist' && c.type === 'weapon' && c.subtype !== 'pistol';
+      const isRevolverLocked = G.botChar.attribute === 'revolver_specialist' && c.type === 'weapon' && c.subtype !== 'revolver';
       const isMeleeLocked  = G.botChar.attribute === 'swift_melee'       && c.type === 'weapon' && c.subtype !== 'melee';
       const isDefenseLocked = G.botChar.attribute === 'extra_carry'      && c.type === 'defense';
       const inRange = c.type === 'weapon'
         ? (c.subtype === 'melee' ? dist === 0 : dist <= c.range)
         : true;
-      const legal = !isPistolLocked && !isMeleeLocked && !isDefenseLocked &&
+      const legal = !isPistolLocked && !isRevolverLocked && !isMeleeLocked && !isDefenseLocked &&
                    ((c.type === 'weapon' && c.speed === phase && inRange && c.ammo > 0)
                  || (c.type === 'defense'));
       if(legal && logits[1+i] > bestScore) { bestScore = logits[1+i]; bestAction = 1+i; }
@@ -2858,6 +2862,7 @@ function isCardPlayable(card) {
     if(card.speed !== phase || card.ammo <= 0) return false;
     // Weapon subtype restrictions
     if(G.playerChar.attribute === 'pistol_specialist' && card.subtype !== 'pistol') return false;
+    if(G.playerChar.attribute === 'revolver_specialist' && card.subtype !== 'revolver') return false;
     if(G.playerChar.attribute === 'swift_melee'       && card.subtype !== 'melee')  return false;
     if(G.playerChar.attribute === 'rifle_specialist'  && card.subtype !== 'assault_rifle' && card.subtype !== 'sniper') return false;
     // Commando Cole can only attack during Fast & Medium phases

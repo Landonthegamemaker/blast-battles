@@ -2604,40 +2604,38 @@ function buildModalStatsHTML(opts) {
     isRetreat=false,
     winner='player'
   } = opts;
-
+  
   // ── BATTLE SCORE ──────────────────────────────────────────────────────────
-  const playerNet = G.playerDmgDealt + G.playerHealTotal;
-  const botNet    = G.botDmgDealt   + G.botHealTotal;
-  const scale     = Math.max(1, (playerNet + botNet) / 2);
-  const rawBattle = (playerNet - botNet) / scale;
+  const netPlayer = G.playerDmgDealt - G.botHealTotal;
+  const netBot    = G.botDmgDealt    - G.playerHealTotal;
+  const rawBattle = netPlayer - netBot;
 
-  const MAX_EARLY_EXIT_PENALTY = 0.4;
+  const MAX_EARLY_EXIT_PENALTY = 0.5;
   const completionRatio = G.turn / MAX_TURNS;
   const earlyExitPenalty = isRetreat
     ? Math.pow(1 - completionRatio, 2) * MAX_EARLY_EXIT_PENALTY
     : 0;
-  const battleFinal = Math.tanh(rawBattle) - earlyExitPenalty;
+
+  // ── SURVIVABILITY BONUS ───────────────────────────────────────────────────
+  const turnFrac  = Math.min(G.turn, MAX_TURNS) / MAX_TURNS;
+  const pHpRatio  = G.playerChar.hp / G.playerChar.maxHp;
+  const bHpRatio  = G.botChar.hp    / G.botChar.maxHp;
+  const survivBonus = turnFrac * (pHpRatio - bHpRatio) - earlyExitPenalty;
+
+  // tanh keeps the damage term in (-1,+1); survivBonus is bounded by
+  // [-1 - MAX_EARLY_EXIT_PENALTY, +1], so the combined score stays well
+  // within [-2, +2] and is almost always within [-1, +1] in practice.
+  // We scale rawBattle by a factor derived from max possible damage so
+  // tanh compresses it sensibly.
+  
+  const scale     = Math.max(1, (G.playerDmgDealt + G.botDmgDealt + G.playerHealTotal + G.botHealTotal) / 2);
+  const battleFinal = Math.tanh(rawBattle / scale) + survivBonus;
+
   const battleFinalDisplay = (battleFinal >= 0 ? '+' : '') + (Math.round(battleFinal * 1000) / 1000).toFixed(3);
   const battleFinalColor = battleFinal >= 0 ? '#44ff88' : '#ff4444';
 
-  // ── SURVIVABILITY SCORE ───────────────────────────────────────────────────
-  // Only meaningful when the player wins outright. Zero for losses and retreats
-  // — there's no survival bonus for being eliminated or quitting.
-  const playerWon = winner === 'player';
-  let survivNorm = 0;
-  if(playerWon) {
-    const pHpRatio  = G.playerChar.hp / G.playerChar.maxHp;
-    const bHpRatio  = G.botChar.hp    / G.botChar.maxHp;
-    const turnFrac  = Math.min(G.turn, MAX_TURNS) / MAX_TURNS;
-    const pHealFrac = Math.min(G.playerHealTotal / Math.max(1, G.playerChar.maxHp), 1);
-    // Weighted composite: HP advantage 50%, heal sustainability 25%, turns survived 25%
-    const hpEdge    = (pHpRatio - bHpRatio + 1) / 2;   // remap [-1,1] → [0,1]
-    const survivScore = 0.50 * hpEdge + 0.25 * pHealFrac + 0.25 * turnFrac;
-    survivNorm = (survivScore - 0.5) * 2;               // remap [0,1] → [-1,+1]
-  }
-  const survivDisplay = (survivNorm >= 0 ? '+' : '') + (Math.round(survivNorm * 1000) / 1000).toFixed(3);
-  const survivColor = survivNorm > 0 ? '#4ab8ff' : survivNorm < 0 ? '#ff8844' : 'var(--muted)';
-  const survivLabel = playerWon ? 'HP · Healing · Turns survived' : 'Win required for bonus';
+  const survivSign   = survivBonus >= 0 ? '+' : '';
+  const survivStr    = `${survivSign}${(Math.round(survivBonus * 1000) / 1000).toFixed(3)}`;
 
   const dmgGlowP  = glowClassPlayer(G.playerDmgDealt,  G.botDmgDealt);
   const dmgGlowB  = glowClassBot   (G.playerDmgDealt,  G.botDmgDealt);
@@ -2673,19 +2671,13 @@ function buildModalStatsHTML(opts) {
     <div class="modal-stat" style="${dmgGlowB ? `border-color:${bFactionColor};box-shadow:0 0 10px ${bFactionColor}44;` : ''}"><div class="modal-stat-label">Bot Dmg Dealt</div><div class="modal-stat-value">${G.botDmgDealt}</div></div>
     <div class="modal-stat" style="${healGlowP ? `border-color:${pFactionColor};box-shadow:0 0 10px ${pFactionColor}44;` : ''}"><div class="modal-stat-label">Your Healing</div><div class="modal-stat-value">${G.playerHealTotal}</div></div>
     <div class="modal-stat" style="${healGlowB ? `border-color:${bFactionColor};box-shadow:0 0 10px ${bFactionColor}44;` : ''}"><div class="modal-stat-label">Bot Healing</div><div class="modal-stat-value">${G.botHealTotal}</div></div>
+
     <div class="modal-stat" style="grid-column:1/-1;background:${battleFinal >= 0 ? 'rgba(30,90,40,0.45)' : 'rgba(90,20,20,0.45)'};border-color:${battleFinal >= 0 ? 'rgba(68,255,136,0.7)' : 'rgba(255,68,68,0.7)'};box-shadow:0 0 12px ${battleFinal >= 0 ? 'rgba(68,255,136,0.35)' : 'rgba(255,68,68,0.35)'};">
       <div class="modal-stat-label" style="display:flex;justify-content:space-between;align-items:baseline;">
-        <span>⭐ Battle Score</span>
-        <span style="font-size:0.58rem;color:var(--muted);">DMG+HEAL balance · tanh${earlyExitPenalty > 0 ? ` · ⚠ EXIT −${earlyExitPenalty.toFixed(2)}` : ''}</span>
+        <span>⭐ Battle Score ⭐</span>
+        <span style="font-size:0.58rem;color:var(--muted);">tanh(DMG−HEAL) + 🛡${survivStr}${earlyExitPenalty > 0 ? ` · ⚠ EXIT −${earlyExitPenalty.toFixed(2)}` : ''}</span>
       </div>
       <div class="modal-stat-value" style="font-size:1.3rem;color:${battleFinalColor};">${battleFinalDisplay}</div>
-    </div>
-    <div class="modal-stat" style="grid-column:1/-1;background:rgba(74,184,255,0.06);border-color:rgba(74,184,255,0.25);">
-      <div class="modal-stat-label" style="display:flex;justify-content:space-between;align-items:baseline;">
-        <span>🛡 Survivability</span>
-        <span style="font-size:0.58rem;color:var(--muted);">${survivLabel}</span>
-      </div>
-      <div class="modal-stat-value" style="font-size:1.3rem;color:${survivColor};">${survivDisplay}</div>
     </div>
   `;
 }

@@ -1222,7 +1222,6 @@ function startPhase() {
     // Hank the Tank is fully locked during Fast — movement AND action blocked
     G.awaitingMove = false;
     G.playerActedThisPhase = true;
-    G.botActedThisPhase = true; 
     logMsg('system', `💣 ${G.playerChar.name} is too slow to act during the Fast phase. Holding position...`);
     setTimeout(() => endPlayerTurn(), 800); // small delay so the log message is readable
   } else {
@@ -1583,6 +1582,10 @@ function impossibleBotPlayPhase() {
   // Hank the Tank (explosive_specialist) cannot act AT ALL during Fast phase — same as heuristic bot
   if(G.botChar.attribute === 'explosive_specialist' && _phase === 'fast') {
     logMsg('bot', `💣 ${G.botChar.name} is too slow to act during the Fast phase.`);
+    G.botActedThisPhase = true;
+    // if(G.playerActedThisPhase = true) {
+      
+    // }
     return;
   }
   if(!ortSession || !ortSession.ready) { botPlayPhase(); return; }

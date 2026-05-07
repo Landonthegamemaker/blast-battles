@@ -1222,7 +1222,7 @@ function startPhase() {
     // Hank the Tank is fully locked during Fast — movement AND action blocked
     G.awaitingMove = false;
     logMsg('system', `💣 ${G.playerChar.name} is too slow to act during the Fast phase. Holding position...`);
-    setTimeout(() => skipPhase(), 3000); // small delay so the log message is readable
+    skipPhase();
     }
   } else {
     G.awaitingMove = true;

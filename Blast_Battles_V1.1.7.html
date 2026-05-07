@@ -1217,6 +1217,7 @@ function startPhase() {
     logMsg('system', `⚙️ ${G.playerChar.name} can only move during Slow & Charged phases.`);
   } else if(!huntressMoveOk) {
     G.awaitingMove = false;
+    G.playerActedThisPhase = true
     logMsg('system', `🎯 ${G.playerChar.name} holds position — can only move on Fast & Medium phases.`);
   } else if(!tankMoveOk) {
     // Hank the Tank is fully locked during Fast — movement AND action blocked

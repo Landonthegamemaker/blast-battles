@@ -1060,6 +1060,12 @@ function initGame() {
 
   // Use player's selected character; bot gets random from opposite faction
   const selectedChar = CHARACTER_POOL.find(c => c.id === _selectedCharId);
+  console.log('Selected ID:', _selectedCharId);
+  console.log('CHARACTER_POOL ids:', CHARACTER_POOL.map(c => c.id));
+  if (!selectedChar && !charPool[0]) {
+    console.error('No characters available in pool. Check CHARACTER_POOL is populated.');
+    return;
+}
   const playerChar = deepClone(selectedChar || charPool[0]);
   const oppFaction = playerChar.faction === 'hero' ? 'villain' : 'hero';
   const botCandidates = charPool.filter(c => c.faction === oppFaction && c.id !== playerChar.id);
@@ -1071,6 +1077,7 @@ function initGame() {
     // Pick a weapon matching the character's specialty
     const subtypeMap = {
       pistol_specialist: 'pistol',
+      revolver_specialist: 'revolver',
       shotgun_specialist: 'shotgun',
       rifle_specialist: 'assault_rifle',
       sniper_specialist: 'sniper',
@@ -1213,7 +1220,7 @@ function startPhase() {
     logMsg('system', `🎯 ${G.playerChar.name} holds position — can only move on Fast & Medium phases.`);
   } else if(!tankMoveOk) {
     G.awaitingMove = false;
-    // Brutus is fully locked during Fast — movement AND action blocked
+    // Hank the Tank is fully locked during Fast — movement AND action blocked
     G.playerActedThisPhase = true;
     logMsg('system', `💣 ${G.playerChar.name} is too slow to act during the Fast phase. Holding position...`);
   } else {
@@ -1571,7 +1578,7 @@ function buildObsVector() {
 
 function impossibleBotPlayPhase() {
   const _phase = PHASES[G.phase];
-  // Brutus (explosive_specialist) cannot act AT ALL during Fast phase — same as heuristic bot
+  // Hank the Tank (explosive_specialist) cannot act AT ALL during Fast phase — same as heuristic bot
   if(G.botChar.attribute === 'explosive_specialist' && _phase === 'fast') {
     logMsg('bot', `💣 ${G.botChar.name} is too slow to act during the Fast phase.`);
     return;
@@ -1706,7 +1713,7 @@ function playerXray() {
 function botPlayPhase() {
   const phase = PHASES[G.phase];
 
-  // Brutus (explosive_specialist) cannot act AT ALL during Fast phase
+  // Hank the Tank (explosive_specialist) cannot act AT ALL during Fast phase
   if(G.botChar.attribute === 'explosive_specialist' && phase === 'fast') {
     logMsg('bot', `💣 ${G.botChar.name} is too slow to act during the Fast phase.`);
     G.botActedThisPhase = true;
@@ -1900,7 +1907,7 @@ function botMoveSmart() {
   // heavy_armor (Iron Titan): Charged only
   // shotgun_specialist (Sam): Slow & Charged only
   // sniper_specialist (Huntress): Fast & Medium only
-  // explosive_specialist (Brutus): locked during Fast (entire phase locked)
+  // explosive_specialist (Hank the Tank): locked during Fast (entire phase locked)
   if(G.botChar.attribute === 'heavy_armor' && phase !== 'charged') return;
   if(G.botChar.attribute === 'shotgun_specialist' && phase !== 'slow' && phase !== 'charged') return;
   if(G.botChar.attribute === 'sniper_specialist' && phase !== 'fast' && phase !== 'medium') return;

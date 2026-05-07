@@ -1583,7 +1583,7 @@ function impossibleBotPlayPhase() {
   if(G.botChar.attribute === 'explosive_specialist' && _phase === 'fast') {
     logMsg('bot', `💣 ${G.botChar.name} is too slow to act during the Fast phase.`);
     G.botActedThisPhase = true;
-    if(G.playerChar.attribute === 'explosive_specialist' && G.playerActedThisPhase = true) {
+    if(G.playerChar.attribute === 'explosive_specialist') {
       advancePhase();
     }
     return;

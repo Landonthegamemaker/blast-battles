@@ -1164,7 +1164,7 @@ function initGame() {
   };
 
   logMsg('system', `=== BLAST BATTLES — Turn 1 [${G.difficulty.toUpperCase()}] ===`);
-  logMsg('system', `You: ${G.playerChar.name} (${G.playerChar.faction}) | Bot: ${G.botChar.name} (${G.botChar.faction})`);
+  logMsg('system', `You select: ${G.playerChar.name} (${G.playerChar.faction}) | Bot selects: ${G.botChar.name} (${G.botChar.faction})`);
   logMsg('system', `You start at ${G.locations[G.playerPos].name} (top-left). Bot starts at ${G.locations[G.botPos].name} (bottom-right).`);
 
   render();
@@ -1223,8 +1223,7 @@ function startPhase() {
     G.awaitingMove = false;
     logMsg('system', `💣 ${G.playerChar.name} is too slow to act during the Fast phase. Holding position...`);
     G.playerActedThisPhase = true
-    setTimeout(() => checkPhaseComplete(), 1000);
-    
+    setTimeout(() => checkPhaseComplete(), 1000);   
   } else {
     G.awaitingMove = true;
   }
@@ -1338,22 +1337,22 @@ function playerPlayCard(card) {
       logMsg('system',`${card.name} is a ${card.speed} weapon — can only play in the ${card.speed} phase.`); return;
     }
     if(G.playerChar.attribute === 'pistol_specialist' && card.subtype !== 'pistol') {
-      logMsg('system',`Pistol Pete can only fire pistols — ${card.name} is locked.`); return;
+      logMsg('system',`${G.playerChar.name} can only fire pistols — ${card.name} is locked.`); return;
     }
     if(G.playerChar.attribute === 'revolver_specialist' && card.subtype !== 'revolver') {
-      logMsg('system',`Cowboy Carl can only fire revolvers — ${card.name} is locked.`); return;
+      logMsg('system',`${G.playerChar.name} can only fire revolvers — ${card.name} is locked.`); return;
     }
     if(G.playerChar.attribute === 'swift_melee' && card.subtype !== 'melee') {
-      logMsg('system',`Viper can only use melee weapons — ${card.name} is locked.`); return;
+      logMsg('system',`${G.playerChar.name} can only use melee weapons — ${card.name} is locked.`); return;
     }
     if(G.playerChar.attribute === 'rifle_specialist' && card.subtype !== 'assault_rifle' && card.subtype !== 'sniper') {
-      logMsg('system',`Ranger Kate uses rifles only — ${card.name} is locked.`); return;
+      logMsg('system',`${G.playerChar.name} uses rifles only — ${card.name} is locked.`); return;
     }
     if(G.playerChar.attribute === 'explosive_resist' && phase !== 'fast' && phase !== 'medium') {
       logMsg('system',`Commando Cole can only attack during Fast & Medium phases.`); return;
     }
     if(G.playerChar.attribute === 'run_and_gun' && !G.playerMovedThisPhase) {
-      logMsg('system',`Agent Ace must move before attacking — Run AND Gun!`); return;
+      logMsg('system',`${G.playerChar.name} must move before attacking — Run AND Gun!`); return;
     }
     const dist = getDistance(G.playerPos, G.botPos);
     // Melee requires contact (dist=0). Ranged weapons require dist <= card.range.
@@ -1958,7 +1957,19 @@ function botMoveSmart() {
   // Offensive bots chasing a near-kill should prioritise position, not retreat
   const playerHpRatioMove = G.playerChar.hp / G.playerChar.maxHp;
   const botNearKill = botIsOffensive && playerHpRatioMove < 0.30;
-
+  
+  function isBotCardUseless(c) {
+  const botAttr = G.botChar.attribute;  // read from G instead of closure
+  if(c.type !== 'weapon') return false;
+  if(botAttr === 'pistol_specialist'  && c.subtype !== 'pistol')   return true;
+  if(botAttr === 'revolver_specialist' && c.subtype !== 'revolver') return true;
+  if(botAttr === 'swift_melee'        && c.subtype !== 'melee')    return true;
+  if(botAttr === 'rifle_specialist'   && c.subtype !== 'assault_rifle' && c.subtype !== 'sniper') return true;
+  if(botAttr === 'extra_carry'        && c.type === 'defense')     return true;
+  if(c.ammo <= 0) return true;
+  return false;
+  }
+  
   const allBotHandCards = [...G.botHand, ...G.botInPlay];
   const deadCardCount = allBotHandCards.filter(isBotCardUseless).length;
 
@@ -2396,17 +2407,6 @@ function botTotalCards() {
   return G.botHand.length + G.botInPlay.length;
 }
 
-function scrapScore(c) {
-  const isUseless = (c.type === 'weapon' && c.ammo <= 0)  // out of ammo
-                 || (c.type === 'defense' && c.durability <= 0); // broken armor
-    if(isUseless) return 0;
-    if(c.type === 'weapon' && c.ammo <= 1) return 10;
-    if(c.type === 'weapon') return 20 + c.damage;
-    if(c.type === 'defense' && c.healAmount > 0) return 50;
-    if(c.type === 'defense') return 30 + (c.defense || 0);
-    return 15;
-}
-
 function applyLocationEffects(isFastPhase = true) {
   // --- Player location ---
   const pLoc = G.locations[G.playerPos];
@@ -2529,18 +2529,6 @@ function applyLocationEffects(isFastPhase = true) {
         // Score each card — higher score = more worth keeping, lower = better to scrap.
         // The bot scraps the lowest-value card: permanently unplayable first,
         // then out-of-ammo weapons, then the weakest remaining card.
-        // ── Dead card analysis — cards the bot can NEVER legally play given its attribute ──
-        // Used to weight Scrap Heap movement and smart discard decisions.
-        function isBotCardUseless(c) {
-          if(c.type !== 'weapon') return false;
-          if(botAttr === 'pistol_specialist'  && c.subtype !== 'pistol') return true;
-          if(botAttr === 'revolver_specialist'  && c.subtype !== 'revolver') return true;
-          if(botAttr === 'swift_melee'        && c.subtype !== 'melee')  return true;
-          if(botAttr === 'rifle_specialist'   && c.subtype !== 'assault_rifle' && c.subtype !== 'sniper') return true;
-          if(botAttr === 'extra_carry'        && c.type === 'defense') return true;
-          if(c.ammo <= 0) return true;  // out of ammo — dead weight
-          return false;
-        }
         function scrapScore(c) {
           if(isBotCardUseless(c)) return 0;          // permanently unplayable — top scrap priority
           if(c.type === 'weapon' && c.ammo <= 1) return 10;  // nearly spent
@@ -2600,7 +2588,6 @@ function checkWin() {
     else endGame('draw', true);
   }
 }
-
 
 // ============================================================
 //  MODAL STATS BUILDER (shared by endGame + retreat)

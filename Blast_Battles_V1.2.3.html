@@ -2641,7 +2641,7 @@ function buildModalStatsHTML(opts) {
   const netBot    = G.botDmgDealt    - G.playerHealTotal;
   const rawBattle = netPlayer - netBot;
 
-  const MAX_EARLY_EXIT_PENALTY = 0.5;
+  const MAX_EARLY_EXIT_PENALTY = 0.55;
   const completionRatio = G.turn / MAX_TURNS;
   const earlyExitPenalty = isRetreat
     ? Math.pow(1 - completionRatio, 2) * MAX_EARLY_EXIT_PENALTY
@@ -2677,11 +2677,9 @@ function buildModalStatsHTML(opts) {
     <div class="modal-stat-split">
       <div class="split-left">
         <div class="modal-stat-label">⏱ TURNS ${G.turn} / ${MAX_TURNS}</div>
-        // <div class="modal-stat-value">${G.turn} / ${MAX_TURNS}</div>
       </div>
       <div class="split-right">
         <div class="modal-stat-label">🕐 MATCH TIME ${timeStr}</div>
-        // <div class="modal-stat-value">${timeStr}</div>
       </div>
     </div>
     <div class="modal-char-card" style="border-color:${pBorderColor}">

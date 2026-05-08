@@ -1965,6 +1965,7 @@ function botMoveSmart() {
   function isBotCardUseless(c) {
     if(c.type !== 'weapon') return false;
     if(botAttr === 'pistol_specialist'  && c.subtype !== 'pistol') return true;
+    if(botAttr === 'revolver_specialist'  && c.subtype !== 'revolver') return true;
     if(botAttr === 'swift_melee'        && c.subtype !== 'melee')  return true;
     if(botAttr === 'rifle_specialist'   && c.subtype !== 'assault_rifle' && c.subtype !== 'sniper') return true;
     if(botAttr === 'extra_carry'        && c.type === 'defense') return true;
@@ -2536,7 +2537,7 @@ function applyLocationEffects(isFastPhase = true) {
           if(c.type === 'defense' && c.healAmount > 0) return 50; // keep heals
           if(c.type === 'defense') return 30 + (c.defense || 0);  // keep armor
           return 15;
-        }
+      }
         // Only scrap if there's a genuinely useless card — otherwise pass
         const worstCard = allBotCards.reduce((a, b) => scrapScore(a) <= scrapScore(b) ? a : b);
         if(scrapScore(worstCard) < 15) {

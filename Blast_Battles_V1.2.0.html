@@ -1223,6 +1223,7 @@ function startPhase() {
     G.awaitingMove = false;
     logMsg('system', `💣 ${G.playerChar.name} is too slow to act during the Fast phase. Holding position...`);
     G.playerActedThisPhase = true
+    G.botActedThisPhase = true;
     G.playerAutoSkippedPhase = true;
     setTimeout(() => checkPhaseComplete(), 3000);   
   } else {

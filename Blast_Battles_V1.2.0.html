@@ -1223,7 +1223,8 @@ function startPhase() {
     G.awaitingMove = false;
     logMsg('system', `💣 ${G.playerChar.name} is too slow to act during the Fast phase. Holding position...`);
     G.playerActedThisPhase = true
-    setTimeout(() => checkPhaseComplete(), 1000);   
+    G.playerAutoSkippedPhase = true;
+    setTimeout(() => checkPhaseComplete(), 3000);   
   } else {
     G.awaitingMove = true;
   }
@@ -2072,9 +2073,9 @@ function botMoveSmart() {
   }
 
   if(pos !== G.botPos) {
-    const viperPursuit = G.botChar.attribute === 'swift_melee'
+    const loganPursuit = G.botChar.attribute === 'swift_melee'
       && getDistance(G.botPos, G.playerPos) <= 1;
-    if(viperPursuit) {
+    if(loganPursuit) {
       logMsg('bot', `⚡ ${G.botChar.name} pursues — opponent was in range!`);
     }
     logMsg('bot',`Bot moves: ${G.locations[G.botPos].name} → ${G.locations[pos].name}.`);
@@ -2107,6 +2108,13 @@ function checkPhaseComplete() {
   }
   // Player acted first — now bot takes its turn
   if(G.playerActedThisPhase && !G.botActedThisPhase) {
+    const currentPhaseName = PHASES[G.phase]?.name?.toLowerCase();
+    const playerAutoSkipped = G.playerChar.attribute === 'explosive_specialist' && currentPhaseName === 'fast';
+    if(playerAutoSkipped){
+      G.playerAutoSkippedPhase = true;
+      checkPhaseComplete();
+      return;
+    }
     setTimeout(() => {
       botMoveSmart();
       if(G.difficulty === 'impossible') {
@@ -2172,9 +2180,9 @@ function playerMove(locIndex) {
 
   // Movement consumes the player's action — UNLESS a triggered bonus applies:
   //   Run & Gun  (run_and_gun):  pistol still ready after moving
-  //   Viper      (swift_melee):  if the opponent was within 1 tile at phase start AND
+  //   logan      (swift_melee):  if the opponent was within 1 tile at phase start AND
   //                              a melee weapon is playable this phase, movement is free —
-  //                              the opponent is punished for staying in Viper's strike zone.
+  //                              the opponent is punished for staying in logan's strike zone.
   const phase = PHASES[G.phase];
   const isRunAndGun  = G.playerChar.attribute === 'run_and_gun';
   const isSwiftMelee = G.playerChar.attribute === 'swift_melee';
@@ -2183,28 +2191,35 @@ function playerMove(locIndex) {
     .some(c => c.type==='weapon' && c.subtype==='pistol' && c.speed===phase && c.ammo>0
       && getDistance(locIndex, G.botPos) <= c.range);
 
-  // Viper triggered: opponent must have been adjacent BEFORE the move (use pre-move playerPos)
+  // Logan triggered: opponent must have been adjacent BEFORE the move (use pre-move playerPos)
   const opponentWasAdjacent = getDistance(G.playerPos, G.botPos) <= 1;
   const hasMeleeThisPhase = [...G.playerHand, ...G.playerInPlay]
     .some(c => c.type==='weapon' && c.subtype==='melee' && c.speed===phase && c.ammo>0);
-  const viperTriggered = isSwiftMelee && opponentWasAdjacent && hasMeleeThisPhase;
-  // After the triggered move, check if Viper landed adjacent — if so, keep action open for strike
-  const viperCanStrike = viperTriggered && getDistance(locIndex, G.botPos) === 0;
+  const loganTriggered = isSwiftMelee && opponentWasAdjacent && hasMeleeThisPhase;
+  // After the triggered move, check if Logan landed adjacent — if so, keep action open for strike
+  const loganCanStrike = loganTriggered && getDistance(locIndex, G.botPos) === 0;
 
   if(isRunAndGun && hasPistolReady) {
     logMsg('player', `${G.playerChar.name} runs into position — pistol still ready!`);
-  } else if(viperCanStrike) {
+  } else if(loganCanStrike) {
     logMsg('player', `⚡ ${G.playerChar.name} strikes while adjacent — melee attack available!`);
     // Don't consume action — allow the follow-up melee strike
-  } else if(viperTriggered) {
+  } else if(loganTriggered) {
     logMsg('player', `⚡ ${G.playerChar.name} pursues — opponent was in range. Move is free, but not adjacent to strike.`);
-    // Move is free (opponent was adjacent), but Viper didn't land on the bot's tile
+    // Move is free (opponent was adjacent), but Logan didn't land on the bot's tile
   } else {
     G.playerActedThisPhase = true;
   }
   render();
   updateHint();
   if(!G.botActedThisPhase && !G.gameOver) {
+    const wasAutoSkip = G.playerAutoSkippedPhase;
+    G.playerAutoSkippedPhase = false;  // reset immediately
+    if(wasAutoSkip) {
+    // Bot already acted this phase — don't give it a second turn
+      checkPhaseComplete();
+      return;
+    }
     setTimeout(() => {
       botMoveSmart();
       if(G.difficulty === 'impossible') {
@@ -2267,7 +2282,7 @@ function getReachable(pos, steps) {
 //  MACY     (healing)         — Cardinal only: rook-style, 1 step up/down/left/right
 //
 // Design notes:
-//   • Viper diagonal is thematic (zig-zag/serpentine) and forces creative positioning
+//   • logan diagonal is thematic (zig-zag/serpentine) and forces creative positioning
 //   • Macy cardinal is thematic (medic moving in straight lines along corridors)
 //   • Both are safe on a 5×5 — no tile is permanently unreachable for either pattern
 function getReachableForChar(char, pos, steps) {
@@ -3203,7 +3218,7 @@ function updateHint() {
     const swiftSteps = isSwift ? (phase === 'fast' ? 2 : 1) : 1;
     el.textContent=`Move to a highlighted tile (costs your action — up to ${swiftSteps} space${swiftSteps>1?'s':''}) — or play a card — or END TURN.`;
   } else if(!G.awaitingMove && G.playerChar.attribute === 'swift_melee' && getDistance(G.playerPos, G.botPos) === 0){
-    el.textContent=`⚡ Viper in contact — strike now with a melee weapon, or END TURN!`;
+    el.textContent=`⚡ logan in contact — strike now with a melee weapon, or END TURN!`;
     el.style.color='var(--accent2)';
   } else if(G.playerChar.attribute === 'heavy_armor' && (phase === 'fast' || phase === 'medium')){
     el.textContent=`⚙️ Heavy armor: movement locked until Slow/Charged phase. Play a card or END TURN.`;

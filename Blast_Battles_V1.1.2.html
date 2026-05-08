@@ -1686,23 +1686,6 @@ function impossibleBotPlayPhase() {
   }
   G.botActedThisPhase = true;
 }
-
-function scrapScore(c) {
-  const botAttr = G.botChar.attribute;
-  const isUseless = (c.type === 'weapon' && c.ammo <= 0)
-                 || (c.type === 'defense' && c.durability <= 0)
-                 || (botAttr === 'pistol_specialist'  && c.type === 'weapon' && c.subtype !== 'pistol')
-                 || (botAttr === 'revolver_specialist' && c.type === 'weapon' && c.subtype !== 'revolver')
-                 || (botAttr === 'swift_melee'        && c.type === 'weapon' && c.subtype !== 'melee')
-                 || (botAttr === 'rifle_specialist'   && c.type === 'weapon' && c.subtype !== 'assault_rifle' && c.subtype !== 'sniper')
-                 || (botAttr === 'extra_carry'        && c.type === 'defense');
-  if(isUseless) return 0;
-  if(c.type === 'weapon' && c.ammo <= 1) return 10;
-  if(c.type === 'weapon') return 20 + c.damage;
-  if(c.type === 'defense' && c.healAmount > 0) return 50;
-  if(c.type === 'defense') return 30 + (c.defense || 0);
-  return 15;
-}
   
 function botRevealCard(cardId) {
   G.botRevealedCard = cardId;
@@ -2532,6 +2515,22 @@ function applyLocationEffects(isFastPhase = true) {
         // Score each card — higher score = more worth keeping, lower = better to scrap.
         // The bot scraps the lowest-value card: permanently unplayable first,
         // then out-of-ammo weapons, then the weakest remaining card.
+        function isBotCardUseless(c) {
+          const botAttr = G.botChar.attribute;
+          const isUseless = (c.type === 'weapon' && c.ammo <= 0)
+                 || (c.type === 'defense' && c.durability <= 0)
+                 || (botAttr === 'pistol_specialist'  && c.type === 'weapon' && c.subtype !== 'pistol')
+                 || (botAttr === 'revolver_specialist' && c.type === 'weapon' && c.subtype !== 'revolver')
+                 || (botAttr === 'swift_melee'        && c.type === 'weapon' && c.subtype !== 'melee')
+                 || (botAttr === 'rifle_specialist'   && c.type === 'weapon' && c.subtype !== 'assault_rifle' && c.subtype !== 'sniper')
+                 || (botAttr === 'extra_carry'        && c.type === 'defense');
+          if(isUseless) return 0;
+          if(c.type === 'weapon' && c.ammo <= 1) return 10;
+          if(c.type === 'weapon') return 20 + c.damage;
+          if(c.type === 'defense' && c.healAmount > 0) return 50;
+          if(c.type === 'defense') return 30 + (c.defense || 0);
+          return 15;
+        }
         function scrapScore(c) {
           if(isBotCardUseless(c)) return 0;          // permanently unplayable — top scrap priority
           if(c.type === 'weapon' && c.ammo <= 1) return 10;  // nearly spent

@@ -789,7 +789,7 @@
 <!-- Modal -->
 <div class="modal-overlay hidden" id="modal-overlay">
   <div class="modal" id="modal">
-    <h2 id="modal-title">GAME OVER</h2>
+    <h3 id="modal-title">GAME OVER</h3>
     <p id="modal-msg"></p>
     <div class="modal-stats" id="modal-stats"></div>
     <button class="btn primary" onclick="document.getElementById(&#39;modal-overlay&#39;).classList.add(&#39;hidden&#39;);showCharSelect();" style="width:100%;">PLAY AGAIN</button>
@@ -2676,10 +2676,10 @@ function buildModalStatsHTML(opts) {
   return `
     <div class="modal-stat-split">
       <div class="split-left">
-        <div class="modal-stat-label">⏱ TURNS ${G.turn} / ${MAX_TURNS}</div>
+        <div class="modal-stat-value">⏱ TURNS ${G.turn} / ${MAX_TURNS}</div>
       </div>
       <div class="split-right">
-        <div class="modal-stat-label">🕐 MATCH TIME ${timeStr}</div>
+        <div class="modal-stat-value">🕐 MATCH TIME ${timeStr}</div>
       </div>
     </div>
     <div class="modal-char-card" style="border-color:${pBorderColor}">
@@ -2716,7 +2716,7 @@ function endGame(winner, timeLimit = false) {
   const won = winner === 'player';
   const draw = winner === 'draw';
   const elapsed = Math.round((Date.now() - G.matchStartTime) / 1000);
-  const mins = Math.ceil(elapsed / 60);
+  const mins = Math.floor(elapsed / 60);
   const secs = elapsed % 60;
   const timeStr = mins > 0 ? `${mins}m ${secs}s` : `${secs}s`;
 

@@ -1961,17 +1961,17 @@ function botMoveSmart() {
 
   // ── Dead card analysis — cards the bot can NEVER legally play given its attribute ──
   // Used to weight Scrap Heap movement and smart discard decisions.
-  const allBotHandCards = [...G.botHand, ...G.botInPlay];
   function isBotCardUseless(c) {
-    if(c.type !== 'weapon') return false;
-    if(botAttr === 'pistol_specialist'  && c.subtype !== 'pistol') return true;
-    if(botAttr === 'revolver_specialist'  && c.subtype !== 'revolver') return true;
-    if(botAttr === 'swift_melee'        && c.subtype !== 'melee')  return true;
-    if(botAttr === 'rifle_specialist'   && c.subtype !== 'assault_rifle' && c.subtype !== 'sniper') return true;
-    if(botAttr === 'extra_carry'        && c.type === 'defense') return true;
-    if(c.ammo <= 0) return true;  // out of ammo — dead weight
-    return false;
+  if(c.type !== 'weapon') return false;
+  if(botAttr === 'pistol_specialist'  && c.subtype !== 'pistol') return true;
+  if(botAttr === 'revolver_specialist'  && c.subtype !== 'revolver') return true;
+  if(botAttr === 'swift_melee'        && c.subtype !== 'melee')  return true;
+  if(botAttr === 'rifle_specialist'   && c.subtype !== 'assault_rifle' && c.subtype !== 'sniper') return true;
+  if(botAttr === 'extra_carry'        && c.type === 'defense') return true;
+  if(c.ammo <= 0) return true;  // out of ammo — dead weight
+  return false;
   }
+  const allBotHandCards = [...G.botHand, ...G.botInPlay];
   const deadCardCount = allBotHandCards.filter(isBotCardUseless).length;
 
   function isHazardTile(idx) {

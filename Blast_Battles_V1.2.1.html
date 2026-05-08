@@ -2706,7 +2706,7 @@ function buildModalStatsHTML(opts) {
     <div class="modal-stat" style="grid-column:1/-1;background:${battleFinal >= 0 ? 'rgba(30,90,40,0.45)' : 'rgba(90,20,20,0.45)'};border-color:${battleFinal >= 0 ? 'rgba(68,255,136,0.7)' : 'rgba(255,68,68,0.7)'};box-shadow:0 0 12px ${battleFinal >= 0 ? 'rgba(68,255,136,0.35)' : 'rgba(255,68,68,0.35)'};">
       <div class="modal-stat-label" style="display:flex;justify-content:space-between;align-items:baseline;">
         <span>⭐ Battle Score ⭐</span>
-        <span style="font-size:0.58rem;color:var(--muted);">tanh(DMG−HEAL) + 🛡️${survivStr}${earlyExitPenalty > 0 ? ` · 🔚EXIT −${earlyExitPenalty.toFixed(2)}` : ''}</span>
+        <span style="font-size:0.58rem;color:var(--muted);">tanh(DMG−HEAL) + 🛡️${survivStr}${earlyExitPenalty > 0 ? ` · ⚠️ EXIT −${earlyExitPenalty.toFixed(2)}` : ''}</span>
       </div>
       <div class="modal-stat-value" style="font-size:1.3rem;color:${battleFinalColor};">${battleFinalDisplay}</div>
     </div>

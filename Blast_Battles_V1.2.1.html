@@ -2740,13 +2740,13 @@ function endGame(winner, timeLimit = false) {
     
     title = won ? '🏆 VICTORY! \u23f3' : '💀 DEFEATED \u23f3';
     msg = won
-      ? `Time's up — you outscored ${G.botChar.name} in ${pDmgWon && pHealWon ? 'DMG & Healing' : pDmgWon ? 'DMG' : 'Healing'}!`
+      ? `Time's up — you outscored ${G.botChar.name} in ${pDmgWon && pHealWon ? 'DMG & Healing' : pDmgWon ? 'DMG' : pHealWon ? 'Healing' : 'NOTHING'}!`
       : `Time's up — ${G.botChar.name} outscored you in ${edge}.`;
   } else {
     
     title = won ? '🏆 VICTORY!' : '💀 DEFEATED';
     msg = won
-      ? `You defeated ${G.botChar.name}! Leading in ${edge}!`
+      ? `You defeated ${G.botChar.name}! Leading in ${pDmgWon && pHealWon ? 'DMG & Healing' : pDmgWon ? 'DMG' : pHealWon ? 'Healing' : 'NOTHING'}!`
       : killingWeapon
         ? `${G.botChar.name} eliminated you with ${killingWeapon}.`
         : `${G.botChar.name} has eliminated you.`;

@@ -1900,6 +1900,19 @@ function _botFireWeapon(weapon, dist) {
   G.botActedThisPhase = true;
 }
 
+// ── Dead card analysis — cards the bot can NEVER legally play given its attribute ──
+// Used to weight Scrap Heap movement and smart discard decisions.
+function isBotCardUseless(c) {
+  if(c.type !== 'weapon') return false;
+  if(botAttr === 'pistol_specialist'  && c.subtype !== 'pistol') return true;
+  if(botAttr === 'revolver_specialist'  && c.subtype !== 'revolver') return true;
+  if(botAttr === 'swift_melee'        && c.subtype !== 'melee')  return true;
+  if(botAttr === 'rifle_specialist'   && c.subtype !== 'assault_rifle' && c.subtype !== 'sniper') return true;
+  if(botAttr === 'extra_carry'        && c.type === 'defense') return true;
+  if(c.ammo <= 0) return true;  // out of ammo — dead weight
+  return false;
+}
+  
 // Smart bot movement — called at start of each phase before bot plays a card
 function botMoveSmart() {
   const phase = PHASES[G.phase];  // declared first — was referenced before declaration previously
@@ -1959,18 +1972,6 @@ function botMoveSmart() {
   const playerHpRatioMove = G.playerChar.hp / G.playerChar.maxHp;
   const botNearKill = botIsOffensive && playerHpRatioMove < 0.30;
 
-  // ── Dead card analysis — cards the bot can NEVER legally play given its attribute ──
-  // Used to weight Scrap Heap movement and smart discard decisions.
-  function isBotCardUseless(c) {
-  if(c.type !== 'weapon') return false;
-  if(botAttr === 'pistol_specialist'  && c.subtype !== 'pistol') return true;
-  if(botAttr === 'revolver_specialist'  && c.subtype !== 'revolver') return true;
-  if(botAttr === 'swift_melee'        && c.subtype !== 'melee')  return true;
-  if(botAttr === 'rifle_specialist'   && c.subtype !== 'assault_rifle' && c.subtype !== 'sniper') return true;
-  if(botAttr === 'extra_carry'        && c.type === 'defense') return true;
-  if(c.ammo <= 0) return true;  // out of ammo — dead weight
-  return false;
-  }
   const allBotHandCards = [...G.botHand, ...G.botInPlay];
   const deadCardCount = allBotHandCards.filter(isBotCardUseless).length;
 
@@ -2408,6 +2409,17 @@ function botTotalCards() {
   return G.botHand.length + G.botInPlay.length;
 }
 
+function scrapScore(c) {
+  const isUseless = (c.type === 'weapon' && c.ammo <= 0)  // out of ammo
+                 || (c.type === 'defense' && c.durability <= 0); // broken armor
+    if(isUseless) return 0;
+    if(c.type === 'weapon' && c.ammo <= 1) return 10;
+    if(c.type === 'weapon') return 20 + c.damage;
+    if(c.type === 'defense' && c.healAmount > 0) return 50;
+    if(c.type === 'defense') return 30 + (c.defense || 0);
+    return 15;
+}
+
 function applyLocationEffects(isFastPhase = true) {
   // --- Player location ---
   const pLoc = G.locations[G.playerPos];
@@ -2537,7 +2549,7 @@ function applyLocationEffects(isFastPhase = true) {
           if(c.type === 'defense' && c.healAmount > 0) return 50; // keep heals
           if(c.type === 'defense') return 30 + (c.defense || 0);  // keep armor
           return 15;
-      }
+        }
         // Only scrap if there's a genuinely useless card — otherwise pass
         const worstCard = allBotCards.reduce((a, b) => scrapScore(a) <= scrapScore(b) ? a : b);
         if(scrapScore(worstCard) < 15) {

@@ -1956,18 +1956,17 @@ function botMoveSmart() {
   // Offensive bots chasing a near-kill should prioritise position, not retreat
   const playerHpRatioMove = G.playerChar.hp / G.playerChar.maxHp;
   const botNearKill = botIsOffensive && playerHpRatioMove < 0.30;
-
+  
   function isBotCardUseless(c) {
-    const botAttr = G.botChar.attribute;
-    const isUseless = (c.type === 'weapon' && c.ammo <= 0)
-         || (c.type === 'defense' && c.durability <= 0)
-         || (botAttr === 'pistol_specialist'  && c.type === 'weapon' && c.subtype !== 'pistol')
-         || (botAttr === 'revolver_specialist' && c.type === 'weapon' && c.subtype !== 'revolver')
-         || (botAttr === 'swift_melee'        && c.type === 'weapon' && c.subtype !== 'melee')
-         || (botAttr === 'rifle_specialist'   && c.type === 'weapon' && c.subtype !== 'assault_rifle' && c.subtype !== 'sniper')
-         || (botAttr === 'extra_carry'        && c.type === 'defense');
-    if(isUseless) return 0;
-    return 15;
+  const botAttr = G.botChar.attribute;
+  if(c.type !== 'weapon') return false;
+  if(botAttr === 'pistol_specialist'   && c.subtype !== 'pistol')        return true;
+  if(botAttr === 'revolver_specialist' && c.subtype !== 'revolver')      return true;
+  if(botAttr === 'swift_melee'         && c.subtype !== 'melee')         return true;
+  if(botAttr === 'rifle_specialist'    && c.subtype !== 'assault_rifle'  && c.subtype !== 'sniper') return true;
+  if(botAttr === 'extra_carry'         && c.type === 'defense')          return true;
+  if(c.ammo <= 0) return true;
+  return false;
   }
   
   const allBotHandCards = [...G.botHand, ...G.botInPlay];

@@ -2717,7 +2717,7 @@ function endGame(winner, timeLimit = false) {
   G.gameOver = true;
   const won = winner === 'player';
   const draw = winner === 'draw';
-  const elapsed = Math.round((Date.now() - G.matchStartTime) / 1000);
+  const elapsed = Math.floor((Date.now() - G.matchStartTime) / 1000);
   const mins = Math.floor(elapsed / 60);
   const secs = elapsed % 60;
   const timeStr = mins > 0 ? `${mins}m ${secs}s` : `${secs}s`;

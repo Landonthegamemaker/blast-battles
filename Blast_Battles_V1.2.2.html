@@ -2181,15 +2181,15 @@ function playerMove(locIndex) {
 
   // Movement consumes the player's action — UNLESS a triggered bonus applies:
   //   Run & Gun  (run_and_gun):  pistol still ready after moving
-  //   logan      (swift_melee):  if the opponent was within 1 tile at phase start AND
+  //   Logan      (swift_melee):  if the opponent was within 1 tile at phase start AND
   //                              a melee weapon is playable this phase, movement is free —
-  //                              the opponent is punished for staying in logan's strike zone.
+  //                              the opponent is punished for staying in Logan's strike zone.
   const phase = PHASES[G.phase];
   const isRunAndGun  = G.playerChar.attribute === 'run_and_gun';
   const isSwiftMelee = G.playerChar.attribute === 'swift_melee';
 
-  const hasPistolReady = isRunAndGun && [...G.playerHand, ...G.playerInPlay]
-    .some(c => c.type==='weapon' && c.subtype==='pistol' && c.speed===phase && c.ammo>0
+  const isReady = isRunAndGun && [...G.playerHand, ...G.playerInPlay]
+    .some(c => c.type==='weapon' && c.speed===phase && c.ammo>0
       && getDistance(locIndex, G.botPos) <= c.range);
 
   // Logan triggered: opponent must have been adjacent BEFORE the move (use pre-move playerPos)
@@ -2200,8 +2200,8 @@ function playerMove(locIndex) {
   // After the triggered move, check if Logan landed adjacent — if so, keep action open for strike
   const loganCanStrike = loganTriggered && getDistance(locIndex, G.botPos) === 0;
 
-  if(isRunAndGun && hasPistolReady) {
-    logMsg('player', `${G.playerChar.name} runs into position — pistol still ready!`);
+  if(isRunAndGun && isReady) {
+    logMsg('player', `${G.playerChar.name} runs into position — ${card.name} still ready!`);
   } else if(loganCanStrike) {
     logMsg('player', `⚡ ${G.playerChar.name} strikes while adjacent — melee attack available!`);
     // Don't consume action — allow the follow-up melee strike

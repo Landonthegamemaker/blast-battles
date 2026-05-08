@@ -567,7 +567,7 @@
     overflow-y: auto;
     text-align: center;
   }
-  .modal h2 { font-family: 'Black Ops One', 'Impact', 'Arial Black', sans-serif; font-size: 1.5rem; color: var(--accent); margin-bottom: 4px; }
+  .modal h3 { font-family: 'Black Ops One', 'Impact', 'Arial Black', sans-serif; font-size: 1.5rem; color: var(--accent); margin-bottom: 4px; }
   .modal p { color: var(--muted); margin-bottom: 12px; font-size: 0.85rem; }
   .modal-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
   .modal-stat { background: var(--surface2); padding: 8px 10px; border-radius: 10px; border: 1px solid var(--border); position: relative; overflow: hidden; }
@@ -789,7 +789,7 @@
 <!-- Modal -->
 <div class="modal-overlay hidden" id="modal-overlay">
   <div class="modal" id="modal">
-    <h2 id="modal-title">GAME OVER</h2>
+    <h3 id="modal-title">GAME OVER</h3>
     <p id="modal-msg"></p>
     <div class="modal-stats" id="modal-stats"></div>
     <button class="btn primary" onclick="document.getElementById(&#39;modal-overlay&#39;).classList.add(&#39;hidden&#39;);showCharSelect();" style="width:100%;">PLAY AGAIN</button>

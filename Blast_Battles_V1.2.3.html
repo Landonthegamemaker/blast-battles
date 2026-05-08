@@ -2875,7 +2875,8 @@ function renderCharDisplay(elId, char, loc) {
           <div class="char-type ${char.faction}" style="font-size:0.5rem;">${char.faction.toUpperCase()}</div>
         </div>
         <div class="hp-bar-wrap">
-          <div class="hp-label">${char.hp}/${char.maxHp} HP · SPD ${char.speed}</div>
+          <div class="hp-label">${char.hp}/${char.maxHp} HP</div>
+          <div class="spd-label">${char.speed} SPD</div>
           <div style="font-size:0.5rem;color:var(--muted);font-family:'Share Tech Mono',monospace;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">📍 ${locName}</div>
           <div class="hp-bar"><div class="hp-fill" style="width:${pct}%"></div></div>
         </div>

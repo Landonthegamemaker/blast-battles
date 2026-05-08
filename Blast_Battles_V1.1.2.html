@@ -1899,19 +1899,6 @@ function _botFireWeapon(weapon, dist) {
   }
   G.botActedThisPhase = true;
 }
-
-// ── Dead card analysis — cards the bot can NEVER legally play given its attribute ──
-// Used to weight Scrap Heap movement and smart discard decisions.
-function isBotCardUseless(c) {
-  if(c.type !== 'weapon') return false;
-  if(botAttr === 'pistol_specialist'  && c.subtype !== 'pistol') return true;
-  if(botAttr === 'revolver_specialist'  && c.subtype !== 'revolver') return true;
-  if(botAttr === 'swift_melee'        && c.subtype !== 'melee')  return true;
-  if(botAttr === 'rifle_specialist'   && c.subtype !== 'assault_rifle' && c.subtype !== 'sniper') return true;
-  if(botAttr === 'extra_carry'        && c.type === 'defense') return true;
-  if(c.ammo <= 0) return true;  // out of ammo — dead weight
-  return false;
-}
   
 // Smart bot movement — called at start of each phase before bot plays a card
 function botMoveSmart() {
@@ -2542,6 +2529,18 @@ function applyLocationEffects(isFastPhase = true) {
         // Score each card — higher score = more worth keeping, lower = better to scrap.
         // The bot scraps the lowest-value card: permanently unplayable first,
         // then out-of-ammo weapons, then the weakest remaining card.
+        // ── Dead card analysis — cards the bot can NEVER legally play given its attribute ──
+        // Used to weight Scrap Heap movement and smart discard decisions.
+        function isBotCardUseless(c) {
+          if(c.type !== 'weapon') return false;
+          if(botAttr === 'pistol_specialist'  && c.subtype !== 'pistol') return true;
+          if(botAttr === 'revolver_specialist'  && c.subtype !== 'revolver') return true;
+          if(botAttr === 'swift_melee'        && c.subtype !== 'melee')  return true;
+          if(botAttr === 'rifle_specialist'   && c.subtype !== 'assault_rifle' && c.subtype !== 'sniper') return true;
+          if(botAttr === 'extra_carry'        && c.type === 'defense') return true;
+          if(c.ammo <= 0) return true;  // out of ammo — dead weight
+          return false;
+        }
         function scrapScore(c) {
           if(isBotCardUseless(c)) return 0;          // permanently unplayable — top scrap priority
           if(c.type === 'weapon' && c.ammo <= 1) return 10;  // nearly spent

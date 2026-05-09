@@ -2665,7 +2665,7 @@ function buildModalStatsHTML(opts) {
   const netBot    = G.botDmgDealt    - G.playerHealTotal;
   const rawBattle = netPlayer - netBot;
 
-  const MAX_EARLY_EXIT_PENALTY = 0.551;
+  const MAX_EARLY_EXIT_PENALTY = 0.554;
   const completionRatio = G.turn / MAX_TURNS;
   const earlyExitPenalty = isRetreat
     ? Math.pow(1 - completionRatio, 2) * MAX_EARLY_EXIT_PENALTY

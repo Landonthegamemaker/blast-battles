@@ -108,6 +108,8 @@ Watch: http://youtu.be/3nQNiWdeH2Q
 
 Song: Jim Yosef - Samurai [NCS Release]
 Music provided by NoCopyrightSounds
+Free Download / Stream: http://NCS.io/Samurai
+Watch: https://www.youtube.com/watch?v=EZUPEoj3Qjs
 
 Song: JPB - Defeat The Night (feat. Ashley Apollodor) [NCS Release]
 Music provided by NoCopyrightSounds
@@ -146,6 +148,7 @@ Watch: http://youtu.be/8xlDwukxjnA
 
 Song: Sync, Avi Snow, Marky Style - Alright [NCS Release]
 Music provided by NoCopyrightSounds
+Watch: https://www.youtube.com/watch?v=KBUWN9943SI
 
 Song: Tom Wilson - Run For Your Life (ft. M.I.M.E) [NCS Release]
 Music provided by NoCopyrightSounds

@@ -729,7 +729,7 @@ const BB_Audio = (() => {
     char_ranger_kate:   { src: './music/luis_humanoide-soldiers-march-289540.mp3',       loop: false },
     char_sentinel_sam:  { src: './music/Pat - Shotgun [NCS Release].mp3',      loop: false },
     char_sprinting_sue: { src: './music/Tom Wilson - Run For Your Life  [NCS Release].mp3',     loop: false },
-    char_tracy_guns:    { src: './music/HXI - Lock n\' Load [NCS Release].mp3',        loop: false },
+    char_tracy_guns:    { src: "./music/HXI - Lock n' Load [NCS Release].mp3",           loop: false },
     char_cowboy_carl:   { src: './music/roybushband-dark-western-149423.mp3',       loop: false },
     char_hank:          { src: './music/Thor_s_Hammer_-_Ethan_Meixsell.mp3',     loop: false },
     char_huntress:      { src: './music/RAIZHELL, CLOUD ZERO - KILL ZONE [NCS Release].mp3',   loop: false },
@@ -780,7 +780,7 @@ const BB_Audio = (() => {
 
   let currentBgm = null, currentKey = null, sfxDucked = false;
   let muted = false, _charTimer = null, _started = false;
-  let bgmVol = 0.20, sfxVol = 0.45;
+  let bgmVol = 0.50, sfxVol = 0.70;
 
   const cache = {};
   function get(key) {
@@ -814,7 +814,7 @@ const BB_Audio = (() => {
   function playBgm(key, fadeMs = 1200) {
     if(muted || currentKey === key) return;
     const next = get(key); if(!next) return;
-    next.volume = 0; next.currentTime = 0; next.play().catch(() => {});
+    next.volume = 0; next.currentTime = 0; next.play().catch((e) => { console.warn(`BB_Audio BGM failed [${key}]:`, e.message, TRACKS[key]?.src); });
     stopCurrent(fadeMs);
     fadeTo(next, muted ? 0 : bgmVol, fadeMs);
     currentBgm = next; currentKey = key;
@@ -834,7 +834,7 @@ const BB_Audio = (() => {
     const sfx = get(key); if(!sfx) return;
     sfx.currentTime = 0; sfx.volume = sfxVol;
     if(currentBgm && !sfxDucked) { sfxDucked = true; fadeTo(currentBgm, bgmVol * 0.2, 200); }
-    sfx.play().catch((e) => { console.warn(`BB_Audio: SFX failed for ${key}:`, e); });
+    sfx.play().catch((e) => { console.warn(`BB_Audio SFX failed [${key}]:`, e.message, TRACKS[key]?.src); });
     currentSfx = sfx;
     sfx.onended = () => {
       if(currentBgm) fadeTo(currentBgm, muted ? 0 : bgmVol, 600);
@@ -868,15 +868,16 @@ const BB_Audio = (() => {
     previewCharTheme(charId) {
       BB_Audio.init(); // ensure audio started
       const key = CHAR_THEMES[charId];
+      console.log(`BB_Audio preview: charId=${charId} key=${key} src=${TRACKS[key]?.src}`);
       if(!key) return;
       if(_charTimer) { clearTimeout(_charTimer); _charTimer = null; }
       // Fade out select BGM
       if(currentBgm && !currentBgm.paused) fadeTo(currentBgm, 0, 400);
       const preview = get(key);
       if(!preview) return;
-      preview.currentTime = 0;
+      preview.currentTime = 15;  // skip quiet intro
       preview.volume = 0;
-      preview.play().catch(() => {});
+      preview.play().catch((e) => { console.warn(`BB_Audio preview failed [${key}]:`, e.message, TRACKS[key]?.src); });
       fadeTo(preview, bgmVol, 400);
       currentBgm = preview; currentKey = key;
       // After 10s fade back to select theme
@@ -928,9 +929,8 @@ const BB_Audio = (() => {
     toggleMute() { muted = !muted; if(currentBgm) currentBgm.volume = muted ? 0 : bgmVol; return muted; },
     setVolume(val) {
       const v = Math.max(0, Math.min(1, val));
-      // Slider 0–1 maps to bgm 0–0.20 and sfx 0–0.45
-      bgmVol = v * 0.20;
-      sfxVol = v * 0.45;
+      bgmVol = v;
+      sfxVol = Math.min(1, v * 1.4);
       if(currentBgm && !muted) currentBgm.volume = bgmVol;
     },
     isMuted() { return muted; }

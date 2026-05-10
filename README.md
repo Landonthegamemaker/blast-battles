@@ -30,7 +30,7 @@ https://youtu.be/7jkt6xqNEL4
 | Hank the Tank | Thor's Hammer by Ethan Meixsell | YouTube Audio Library |
 | Huntress Hellen | KILL ZONE by RAIZHELL & CLOUD ZERO | NCS |
 | Iron Titan | The Riot by NIVIRO | NCS |
-| Lunging Logan | EXECUTIONER by DJ FKU | NCS |
+| Lunging Logan | Samurai by Jim Yosef | NCS |
 | Tactical Tim | Epic Orchestral Villain Theme by nickpanekaiassets | Pixabay (No License) |
 | The Shadow | Eerie by the_mountain | Pixabay (Licensed) |
 | Toxic Trooper | Toxic Drift by white_records | Pixabay (Licensed) |
@@ -43,7 +43,7 @@ https://youtu.be/7jkt6xqNEL4
 |---|---|---|
 | Dark Music | Black_Rose_Rabbit | Pixabay (No License) |
 | Actin Up | MK2 | YouTube Audio Library |
-| War Military Army Background Music | hitslab | Pixabay (Licensed) |
+| Warriors | Asketa & Natan Chaim x Requenze x M.I.M.E | NCS |
 | How We Do It (ft. Marvin Divine) | Hoober & Axol | NCS |
 | Desperate | TOKYO MACHINE & NEFFEX | NCS |
 | Ark | Ship Wrek | NCS |
@@ -78,6 +78,11 @@ https://youtu.be/7jkt6xqNEL4
 
 ### NoCopyrightSounds (NCS) — Free with credit required
 
+Song: Asketa & Natan Chaim x Requenze x M.I.M.E - Warriors [NCS Release]
+Music provided by NoCopyrightSounds
+Free Download/Stream: http://ncs.io/Warriors
+Watch: http://youtu.be/dVWlxP_Iu-4
+
 Song: Axol & Hoober - How We Do It (ft. Marvin Divine) [NCS Release]
 Music provided by NoCopyrightSounds
 Free Download/Stream: http://ncs.io/HWDI
@@ -87,11 +92,6 @@ Song: Cartoon, Jéja - Why We Lose (feat. Coleman Trapp) [NCS Release]
 Music provided by NoCopyrightSounds
 Free Download/Stream: http://ncs.io/whywelose
 Watch: http://youtu.be/zyXmsVwZqX4
-
-Song: DJ FKU - EXECUTIONER [NCS Release]
-Music provided by NoCopyrightSounds
-Free Download/Stream: http://ncs.io/EXECUTIONER
-Watch: http://ncs.lnk.to/EXECUTIONERAT/youtube
 
 Song: Fareoh - Under Water [NCS Release]
 Music provided by NoCopyrightSounds
@@ -105,6 +105,11 @@ Song: Janji - Heroes Tonight (feat. Johnning) [NCS Release]
 Music provided by NoCopyrightSounds
 Free Download/Stream: http://ncs.io/ht
 Watch: http://youtu.be/3nQNiWdeH2Q
+
+Song: Jim Yosef - Samurai [NCS Release]
+Music provided by NoCopyrightSounds
+Free Download / Stream: http://NCS.io/Samurai
+Watch: https://www.youtube.com/watch?v=EZUPEoj3Qjs
 
 Song: JPB - Defeat The Night (feat. Ashley Apollodor) [NCS Release]
 Music provided by NoCopyrightSounds
@@ -143,6 +148,7 @@ Watch: http://youtu.be/8xlDwukxjnA
 
 Song: Sync, Avi Snow, Marky Style - Alright [NCS Release]
 Music provided by NoCopyrightSounds
+Watch: https://www.youtube.com/watch?v=KBUWN9943SI
 
 Song: Tom Wilson - Run For Your Life (ft. M.I.M.E) [NCS Release]
 Music provided by NoCopyrightSounds
@@ -159,7 +165,6 @@ Watch: http://youtu.be/fuV7FxBsXH4
 
 Shadow Protocol by amaksi — https://pixabay.com/music/upbeat-shadow-protocol-425633/
 Epic Sci-Fi Villain Theme by nickpanekaiassets — https://pixabay.com/music/main-title-epic-sci-fi-villain-theme-for-cinematic-projects-224750/
-War Military Army Background Music by hitslab — https://pixabay.com/music/main-title-war-military-army-background-music-372155/
 Toxic Drift by white_records — https://pixabay.com/music/phonk-toxic-drift-phonk-house-background-music-for-video-stories-57-second-503889/
 Eerie by the_mountain — https://pixabay.com/music/horror-scene-eerie-375969/
 Dark Western by roybushband — https://pixabay.com/music/modern-country-dark-western-149423/

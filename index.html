@@ -728,7 +728,7 @@ const BB_Audio = (() => {
     char_pistol_pete:   { src: './music/prettyjohn1-basketball-basketball-music_35sec-500589.mp3',       loop: false },
     char_ranger_kate:   { src: './music/luis_humanoide-soldiers-march-289540.mp3',       loop: false },
     char_sentinel_sam:  { src: './music/Pat - Shotgun [NCS Release].mp3',      loop: false },
-    char_sprinting_sue: { src: './music/Tom Wilson - Run For Your Life [NCS Release].mp3',     loop: false },
+    char_sprinting_sue: { src: './music/Tom Wilson - Run For Your Life  [NCS Release].mp3',     loop: false },
     char_tracy_guns:    { src: './music/HXI - Lock n\' Load [NCS Release].mp3',        loop: false },
     char_cowboy_carl:   { src: './music/roybushband-dark-western-149423.mp3',       loop: false },
     char_hank:          { src: './music/Thor_s_Hammer_-_Ethan_Meixsell.mp3',     loop: false },
@@ -780,7 +780,7 @@ const BB_Audio = (() => {
 
   let currentBgm = null, currentKey = null, sfxDucked = false;
   let muted = false, _charTimer = null, _started = false;
-  const bgmVol = 0.45, sfxVol = 0.80;
+  let bgmVol = 0.20, sfxVol = 0.45;
 
   const cache = {};
   function get(key) {
@@ -864,6 +864,30 @@ const BB_Audio = (() => {
   return {
     init() { if(_started) return; _started = true; playBgm('select', 800); },
 
+    // Preview first 10s of char theme on select screen click
+    previewCharTheme(charId) {
+      BB_Audio.init(); // ensure audio started
+      const key = CHAR_THEMES[charId];
+      if(!key) return;
+      if(_charTimer) { clearTimeout(_charTimer); _charTimer = null; }
+      // Fade out select BGM
+      if(currentBgm && !currentBgm.paused) fadeTo(currentBgm, 0, 400);
+      const preview = get(key);
+      if(!preview) return;
+      preview.currentTime = 0;
+      preview.volume = 0;
+      preview.play().catch(() => {});
+      fadeTo(preview, bgmVol, 400);
+      currentBgm = preview; currentKey = key;
+      // After 10s fade back to select theme
+      _charTimer = setTimeout(() => {
+        fadeTo(preview, 0, 600, () => { preview.pause(); preview.currentTime = 0; });
+        const sel = get('select');
+        if(sel) { sel.currentTime = 0; sel.volume = 0; sel.play().catch(()=>{}); fadeTo(sel, bgmVol, 800); currentBgm = sel; currentKey = 'select'; }
+        _charTimer = null;
+      }, 10000);
+    },
+
     startGameplay(charId) {
       const themeKey = CHAR_THEMES[charId];
       if(themeKey) {
@@ -885,8 +909,12 @@ const BB_Audio = (() => {
       let key;
       if(winner === 'draw')        key = 'end_draw';
       else if(winner === 'player') key = playerFaction === 'hero' ? 'end_hero_victory' : 'end_villain_victory';
-      else                         key = playerFaction === 'hero' ? 'end_villain_victory' : 'end_hero_victory';
-      setTimeout(() => { playBgm(key, 1200); }, 600);
+      else                         key = 'end_defeat';  // player lost — always Why We Lose
+      setTimeout(() => {
+        const endAudio = get(key);
+        if(endAudio) endAudio.currentTime = 30;
+        playBgm(key, 1200);
+      }, 600);
     },
 
     playZoneSfx(effect) {
@@ -898,6 +926,13 @@ const BB_Audio = (() => {
     stopSfx() { stopSfx(); },
 
     toggleMute() { muted = !muted; if(currentBgm) currentBgm.volume = muted ? 0 : bgmVol; return muted; },
+    setVolume(val) {
+      const v = Math.max(0, Math.min(1, val));
+      // Slider 0–1 maps to bgm 0–0.20 and sfx 0–0.45
+      bgmVol = v * 0.20;
+      sfxVol = v * 0.45;
+      if(currentBgm && !muted) currentBgm.volume = bgmVol;
+    },
     isMuted() { return muted; }
   };
 })();
@@ -933,7 +968,10 @@ document.addEventListener('keydown', () => BB_Audio.init(), { once: true });
         </div>
         <div class="timer-badge" id="phase-timer">⏱ 20s</div>
       </div>
-      <button id="btn-mute" onclick="const m=BB_Audio.toggleMute();this.textContent=m?'🔇':'🔊';" title="Mute / Unmute" style="background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:4px;padding:4px 8px;cursor:pointer;font-size:0.8rem;margin-right:4px;">🔊</button>
+      <button id="btn-mute" onclick="const m=BB_Audio.toggleMute();this.textContent=m?'🔇':'🔊';" title="Mute / Unmute" style="background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:4px;padding:4px 8px;cursor:pointer;font-size:0.8rem;margin-right:2px;">🔊</button>
+      <input type="range" id="vol-slider" min="0" max="100" value="50" title="Volume"
+        oninput="BB_Audio.setVolume(this.value/100)"
+        style="width:70px;height:4px;cursor:pointer;accent-color:var(--accent);margin-right:6px;vertical-align:middle;">
       <button class="btn" onclick="showHelp()" style="font-size:0.7rem;padding:4px 10px;">? HELP</button>
     </div>
   </header>
@@ -3602,6 +3640,7 @@ function sortCharSelect(sortKey) {
 }
 
 function showCharSelect() {
+  BB_Audio.init();
   BB_Audio.returnToSelect();
   _selectedCharId = null;
   _currentSort = 'faction';
@@ -3624,6 +3663,9 @@ function showCharSelect() {
 function selectChar(charId) {
   _selectedCharId = charId;
   const char = CHARACTER_POOL.find(c => c.id === charId);
+
+  // Play first 10 seconds of character theme, muting select screen BGM
+  BB_Audio.previewCharTheme(charId);
 
   // Reset all cards, remove any existing overlays
   document.querySelectorAll('#hero-grid [data-char-id], #villain-grid [data-char-id]').forEach(el => {

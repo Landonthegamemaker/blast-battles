@@ -20,7 +20,7 @@ https://youtu.be/7jkt6xqNEL4
 |---|---|---|
 | Agent Ace | Epic Sci-Fi Villain Theme by nickpanekaiassets | Pixabay (Licensed) |
 | Commando Cole | Shadow Protocol by amaksi | Pixabay (Licensed) |
-| Macy the Medic | Cinematic Orchestral Heroic Army Music by luis_humanoide | Pixabay (No License) |
+| Macy the Medic | My Heart by  Different Heaven & EH!DE | NCS |
 | Pistol Pete | Basketball Music by prettyjohn1 | Pixabay (No License) |
 | Ranger Kate | Soldiers March by luis_humanoide | Pixabay (No License) |
 | Sentinel Sam | Shotgun by Pat | NCS |
@@ -92,6 +92,11 @@ Song: Cartoon, Jéja - Why We Lose (feat. Coleman Trapp) [NCS Release]
 Music provided by NoCopyrightSounds
 Free Download/Stream: http://ncs.io/whywelose
 Watch: http://youtu.be/zyXmsVwZqX4
+
+Song: Different Heaven & EH!DE - My Heart [NCS Release]
+Music provided by NoCopyrightSounds
+Free Download/Stream: http://ncs.io/myheart
+Watch: http://youtu.be/jK2aIUmmdP4
 
 Song: Fareoh - Under Water [NCS Release]
 Music provided by NoCopyrightSounds

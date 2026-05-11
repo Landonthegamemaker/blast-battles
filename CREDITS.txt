@@ -29,11 +29,11 @@
 ./phaseSwitch.mp3 === 707042__vilkas_sound__vs-button-click-05.mp3,
 
 /end
-./retreat.wav === 397302__theuncertainman__i-need-to-fall-back-at-once.wav
+./retreat.wav === 397302__theuncertainman__i-need-to-fall-back-at-once.wav,
 ./shadowDeath.wav === 171050__amatvejuk721__death-breath.wav,
 ./toxicDeath.wav === 688552__d4nhardt__deathnoise.wav,
 ./shadowKills.ogg === 169150__zajo__embracedeath.ogg,
-./maleDeath.wav === 813308__qubodup__wilhelm-scream.wav
+./maleDeath.wav === 813308__qubodup__wilhelm-scream.wav,
 ./femaleDeath.wav === 219149__musability__female-wilhelm-scream-audacity.mp3,
 
 /equip

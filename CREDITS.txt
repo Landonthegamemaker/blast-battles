@@ -1,0 +1,55 @@
+/begin
+./chooseYourChar.mp3 === 529940__grizzlymittz__retro-select-your-character.mp3,
+./charSelect.mp3 = creatorshome-on-001-337979.mp3,
+./confirm.mp3 === freesound_community-ui_correct_button2-103167.mp3,
+./botDiffSelect.wav === 131658__bertrof__game-sound-selection.wav,
+./default.wav === 545201__theplax__pop-1.wav
+
+/combat
+./timer.mp3 === freesound_community-piep-33489.mp3,
+./x-ray.wav === 270537__littlerobotsoundfactory__menu_select_00.wav,
+./pistolReady.wav === freesound_community-glock-108348.mp3,
+./revolverReady1.wav === 177863__dredile__clean-revolver-reload.wav 
+./revolverReady2.wav === 402790__acidsnowflake__cocking-a-revolver.wav
+./rifleReady.wav === 784753__baggonotes__rifle_equip1.wav,
+./shotgunReady.wav === 561471__gamewithbepis__generic-rifle-cock.wav,
+./sniperReady.wav === 790078__omiranda14__sfx_inventorysounds_equippingsound_07.wav,
+./explosiveReady.wav === 725401__serutonin-deprivd__inserting-a-rocket-into-an-rpg-7-rocket-launcher-full-sequence.wav
+./meleeReady.m4a === 754353__jas88__sound-11_-sharpening-knife.m4a
+./warHammerReady.mp3 === 810747__mokasza__metallic-clang.mp3,
+./hit.wav === 745496__harrisonlace__metallic_ui_selection.wav,
+./lowHP.wav === 332821__loudernoises__heartbeat-60bpm.wav,
+./blockAtk.mp3 === 351371__wilhellboy__heavybulletping.mp3,
+./defBroken.wav === 371092__mccormick_iain__glass-break-3.wav,
+./emptyGun.wav === 387482__cosmicembers__empty-gun-failure-to-fire-trigger-pull.wav,
+./heal.mp3 === 483608__raclure__improvementhealing-chime.mp3,
+./meleeAtk.wav === 485073__melloja__shadoks-swoosh-and-hit-3.wav,
+./explosiveHit.wav === 783885__inkyframes__lasers-hitting-tech-equipment,
+./fire.wav === freesound_community-ar15-rifle-shot-from-50-yards-away-98831.mp3,
+./phaseSwitch.mp3 === 707042__vilkas_sound__vs-button-click-05.mp3
+
+/end
+./retreat.wav === 570701__robinhood76__10136-flag-flicking-on-strong-wind-isolated.wav,
+./shadowDeath.wav === 171050__amatvejuk721__death-breath.wav,
+./toxicDeath.wav === 688552__d4nhardt__deathnoise.wav,
+./shadowKills.ogg === 169150__zajo__embracedeath.ogg,
+./maleDeath.wav === 13797__sweetneo85__wilhelm.wav,
+./femaleDeath.wav === 219149__musability__female-wilhelm-scream-audacity.mp3
+
+/equip
+./plateArmor.mp3 === 518850__mrickey13__item-equip.mp3,
+./vest.wav === 843997__meemd1c__armor-pickup-sfx.wav,
+./chainmail.wav === 512134__beezlefm__chainmail-rustle-sound.wav,
+./usemedkit.wav === 51176__rutgermuller__zipper-unzip-3-slow.wav,
+./useOintment.wav === 471834__keshafilm__health-pickup.wav
+
+/move
+./steps.wav === 620999__reneferreira__pull.wav,
+./titan.wav === 759715__artninja__custom_skywalker_sound_inspired_ironman_or_optimus_chest_piece_attatchment_w_rattle_sounds.wav
+
+/zone
+./enterHeroZone.wav === 569062__humanoide9000__superhero-theme.wav,
+./enterVillainZone.wav === 569047__humanoide9000__evil-villian-theme.wav,
+./enterHazardZone.mp3 === 328381__leonelmail__radioactive-machine.mp3,
+./enterScrapZone.mp3 === 847481__gettinsomegamesounds__dropped-scrap-metal.mp3,
+./enterSniperPost.wav === 210018__supakid13__sniper-scope-zoom-in.wav

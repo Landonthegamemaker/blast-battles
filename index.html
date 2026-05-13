@@ -498,8 +498,6 @@
       color: var(--villain);
     }
 
-    .hp-bar-wrap {}
-
     .hp-label {
       font-size: 0.58rem;
       color: var(--muted);
@@ -1129,8 +1127,6 @@
       color: #b0c0d0;
     }
 
-    .phase-skip {}
-
     .btn {
       font-family: 'Rajdhani', sans-serif;
       font-weight: 700;
@@ -1620,7 +1616,7 @@
         end_hero_victory: { src: './audio/music/Janji, Johnning - Heroes Tonight (feat. Johnning) [NCS Release].mp3', loop: false },
         end_villain_victory: { src: './audio/music/NIVIRO - Demons [NCS Release].mp3', loop: false },
         end_draw: { src: './audio/music/Sync, Avi Snow, Marky Style - Alright [NCS Release].mp3', loop: false },
-        end_defeat: { src: './audio/music/Cartoon, Coleman Trapp, Jéja - Why We Lose (feat. Coleman Trapp) [NCS Release].mp3', loop: false },
+        end_defeat: { src: './audio/music/Cartoon, Coleman Trapp, Jeja - Why We Lose (feat. Coleman Trapp) [NCS Release].mp3', loop: false },
         sfx_hero: { src: './audio/sfx/569062__humanoide9000__superhero-theme.wav', loop: false },
         sfx_villain: { src: './audio/sfx/569047__humanoide9000__evil-villian-theme.wav', loop: false },
         sfx_hazard: { src: './audio/sfx/328381__leonelmail__radioactive-machine.mp3', loop: false },
@@ -1938,7 +1934,7 @@
       <p id="modal-msg"></p>
       <div class="modal-stats" id="modal-stats"></div>
       <button class="btn primary"
-        onclick="document.getElementById(&#39;modal-overlay&#39;).classList.add(&#39;hidden&#39;);showCharSelect();"
+        onclick="document.getElementById(modal-overlay).classList.add(hidden);showCharSelect();"
         style="width:100%;">PLAY AGAIN</button>
     </div>
   </div>
@@ -1952,7 +1948,7 @@
       <!-- Title row: truly centered, confirm absolutely right -->
       <div style="position:relative;display:flex;align-items:center;justify-content:center;margin-bottom:4px;">
         <h2
-          style="font-family:&#39;Black Ops One&#39;,&#39;Impact&#39;,&#39;Arial Black&#39;,sans-serif;font-size:1.2rem;color:var(--accent);letter-spacing:2px;margin:0;">
+          style="font-family:Black Ops One,Impact,Arial Black,sans-serif;font-size:1.2rem;color:var(--accent);letter-spacing:2px;margin:0;">
           CHOOSE YOUR CHARACTER</h2>
         <button class="btn primary" id="char-select-confirm" onclick="confirmCharSelect()" disabled=""
           style="position:absolute;right:0;padding:5px 16px;font-size:0.78rem;flex-shrink:0;opacity:0;pointer-events:none;">CONFIRM
@@ -1960,22 +1956,22 @@
       </div>
       <!-- Preview: single compact line -->
       <div id="char-select-preview"
-        style="font-family:&#39;Share Tech Mono&#39;,&#39;Courier New&#39;,monospace;font-size:0.53rem;color:var(--muted);text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:6px;">
+        style="font-family:Share Tech Mono,Courier New,monospace;font-size:0.53rem;color:var(--muted);text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:6px;">
         ← Select a character to continue</div>
 
       <!-- Sort filters -->
       <div style="display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap;margin-bottom:10px;">
         <span
-          style="font-family:&#39;Share Tech Mono&#39;,&#39;Courier New&#39;,monospace;font-size:0.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;">SORT:</span>
-        <button class="btn sort-btn active-sort" data-sort="faction" onclick="sortCharSelect(&#39;faction&#39;)"
+          style="font-family:Share Tech Mono,Courier New,monospace;font-size:0.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;">SORT:</span>
+        <button class="btn sort-btn active-sort" data-sort="faction" onclick="sortCharSelect(faction)"
           style="font-size:0.6rem;padding:2px 8px;">Faction</button>
-        <button class="btn sort-btn" data-sort="name" onclick="sortCharSelect(&#39;name&#39;)"
+        <button class="btn sort-btn" data-sort="name" onclick="sortCharSelect(name)"
           style="font-size:0.6rem;padding:2px 8px;">A–Z</button>
-        <button class="btn sort-btn" data-sort="hp" onclick="sortCharSelect(&#39;hp&#39;)"
+        <button class="btn sort-btn" data-sort="hp" onclick="sortCharSelect(hp)"
           style="font-size:0.6rem;padding:2px 8px;">HP ↑</button>
-        <button class="btn sort-btn" data-sort="speed" onclick="sortCharSelect(&#39;speed&#39;)"
+        <button class="btn sort-btn" data-sort="speed" onclick="sortCharSelect(speed)"
           style="font-size:0.6rem;padding:2px 8px;">SPD ↑</button>
-        <button class="btn sort-btn" data-sort="ability" onclick="sortCharSelect(&#39;ability&#39;)"
+        <button class="btn sort-btn" data-sort="ability" onclick="sortCharSelect(ability)"
           style="font-size:0.6rem;padding:2px 8px;">Ability % ↑</button>
       </div>
 
@@ -1983,7 +1979,7 @@
         <!-- Heroes -->
         <div>
           <div id="hero-header"
-            style="font-family:&#39;Share Tech Mono&#39;,&#39;Courier New&#39;,monospace;font-size:0.58rem;color:var(--hero);text-transform:uppercase;letter-spacing:3px;text-align:center;margin-bottom:6px;border-bottom:1px solid rgba(74,184,255,0.3);padding-bottom:4px;">
+            style="font-family:Share Tech Mono,Courier New,monospace;font-size:0.58rem;color:var(--hero);text-transform:uppercase;letter-spacing:3px;text-align:center;margin-bottom:6px;border-bottom:1px solid rgba(74,184,255,0.3);padding-bottom:4px;">
             🦸 HEROES</div>
           <div id="hero-grid" style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:6px;"></div>
         </div>
@@ -1992,7 +1988,7 @@
         <!-- Villains -->
         <div>
           <div id="villain-header"
-            style="font-family:&#39;Share Tech Mono&#39;,&#39;Courier New&#39;,monospace;font-size:0.6rem;color:var(--villain);text-transform:uppercase;letter-spacing:3px;text-align:center;margin-bottom:6px;border-bottom:1px solid rgba(196,75,255,0.3);padding-bottom:4px;">
+            style="font-family:Share Tech Mono,Courier New,monospace;font-size:0.6rem;color:var(--villain);text-transform:uppercase;letter-spacing:3px;text-align:center;margin-bottom:6px;border-bottom:1px solid rgba(196,75,255,0.3);padding-bottom:4px;">
             🦹‍♂️ VILLAINS</div>
           <div id="villain-grid" style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:6px;"></div>
         </div>
@@ -2004,24 +2000,24 @@
   <div class="modal-overlay hidden" id="difficulty-overlay">
     <div class="modal" style="max-width:480px;text-align:center;">
       <h2
-        style="font-family:&#39;Black Ops One&#39;,&#39;Impact&#39;,&#39;Arial Black&#39;,sans-serif;font-size:1.5rem;color:var(--accent);letter-spacing:2px;margin-bottom:6px;">
+        style="font-family:Black Ops One,Impact,Arial Black,sans-serif;font-size:1.5rem;color:var(--accent);letter-spacing:2px;margin-bottom:6px;">
         SELECT DIFFICULTY</h2>
       <p style="color:var(--muted);font-size:0.8rem;margin-bottom:20px;">Choose how aggressive the bot opponent will be.
       </p>
       <div style="display:flex;flex-direction:column;gap:10px;">
-        <button class="btn" onclick="startWithDifficulty(&#39;easy&#39;)"
+        <button class="btn" onclick="startWithDifficulty(easy)"
           style="width:100%;padding:12px;font-size:1rem;background:rgba(68,255,136,0.1);border-color:var(--fast);color:var(--fast);">
           🟢 EASY — Bot skips 50% of the time
         </button>
-        <button class="btn" onclick="startWithDifficulty(&#39;medium&#39;)"
+        <button class="btn" onclick="startWithDifficulty(medium)"
           style="width:100%;padding:12px;font-size:1rem;background:rgba(232,184,75,0.1);border-color:var(--medium);color:var(--medium);">
           🟡 MEDIUM — Bot skips 25% of the time
         </button>
-        <button class="btn" onclick="startWithDifficulty(&#39;hard&#39;)"
+        <button class="btn" onclick="startWithDifficulty(hard)"
           style="width:100%;padding:12px;font-size:1rem;background:rgba(255,136,68,0.1);border-color:var(--slow);color:var(--slow);">
           🔴 HARD — Bot never skips, plays optimally
         </button>
-        <button class="btn" onclick="startWithDifficulty(&#39;impossible&#39;)"
+        <button class="btn" onclick="startWithDifficulty(impossible)"
           style="width:100%;padding:12px;font-size:1rem;background:rgba(255,68,68,0.1);border-color:var(--charged);color:var(--charged);">
           🤖 IMPOSSIBLE — Trained RL model
         </button>
@@ -2055,8 +2051,7 @@
         <b style="color:var(--accent)">VICTORY:</b> Reduce the opponent's HP to 0, or survive 20 turns with more HP than
         your opponent to win the battle. Do you have what it takes to take on the bots?
       </div>
-      <button class="btn primary"
-        onclick="document.getElementById(&#39;help-overlay&#39;).classList.add(&#39;hidden&#39;)"
+      <button class="btn primary" onclick="document.getElementById(help-overlay).classList.add(hidden)"
         style="width:100%;margin-top:16px;">GOT IT</button>
     </div>
   </div>

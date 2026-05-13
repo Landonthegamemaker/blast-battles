@@ -1963,7 +1963,7 @@
       <div style="display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap;margin-bottom:10px;">
         <span
           style="font-family:Share Tech Mono,Courier New,monospace;font-size:0.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;">SORT:</span>
-        <button class="btn sort-btn active-sort" data-sort="faction" onclick="sortCharSelect(faction)"
+        <button class="btn sort-btn active-sort" data-sort="faction" onclick="sortCharSelect(&#39;faction&#39;)"
           style="font-size:0.6rem;padding:2px 8px;">Faction</button>
         <button class="btn sort-btn" data-sort="name" onclick="sortCharSelect(name)"
           style="font-size:0.6rem;padding:2px 8px;">A–Z</button>
@@ -2005,19 +2005,19 @@
       <p style="color:var(--muted);font-size:0.8rem;margin-bottom:20px;">Choose how aggressive the bot opponent will be.
       </p>
       <div style="display:flex;flex-direction:column;gap:10px;">
-        <button class="btn" onclick="startWithDifficulty(easy)"
+        <button class="btn" onclick="startWithDifficulty(&#39;easy&#39;)"
           style="width:100%;padding:12px;font-size:1rem;background:rgba(68,255,136,0.1);border-color:var(--fast);color:var(--fast);">
           🟢 EASY — Bot skips 50% of the time
         </button>
-        <button class="btn" onclick="startWithDifficulty(medium)"
+        <button class="btn" onclick="startWithDifficulty(&#39;medium&#39;)"
           style="width:100%;padding:12px;font-size:1rem;background:rgba(232,184,75,0.1);border-color:var(--medium);color:var(--medium);">
           🟡 MEDIUM — Bot skips 25% of the time
         </button>
-        <button class="btn" onclick="startWithDifficulty(hard)"
+        <button class="btn" onclick="startWithDifficulty(&#39;hard&#39;)"
           style="width:100%;padding:12px;font-size:1rem;background:rgba(255,136,68,0.1);border-color:var(--slow);color:var(--slow);">
           🔴 HARD — Bot never skips, plays optimally
         </button>
-        <button class="btn" onclick="startWithDifficulty(impossible)"
+        <button class="btn" onclick="startWithDifficulty(&#39;impossible&#39;)"
           style="width:100%;padding:12px;font-size:1rem;background:rgba(255,68,68,0.1);border-color:var(--charged);color:var(--charged);">
           🤖 IMPOSSIBLE — Trained RL model
         </button>
@@ -2051,7 +2051,8 @@
         <b style="color:var(--accent)">VICTORY:</b> Reduce the opponent's HP to 0, or survive 20 turns with more HP than
         your opponent to win the battle. Do you have what it takes to take on the bots?
       </div>
-      <button class="btn primary" onclick="document.getElementById(help-overlay).classList.add(hidden)"
+      <button class="btn primary"
+        onclick="document.getElementById(&#39;help-overlay&#39;).classList.add(&#39;hidden&#39;)"
         style="width:100%;margin-top:16px;">GOT IT</button>
     </div>
   </div>
